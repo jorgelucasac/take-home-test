@@ -38,7 +38,7 @@ public sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
             db.Database.Migrate();
-            LoanSeed.EnsureSeededAsync(db).GetAwaiter().GetResult();
+            LoanSeed.EnsureSeededAsync(sp).GetAwaiter().GetResult();
         });
     }
 }

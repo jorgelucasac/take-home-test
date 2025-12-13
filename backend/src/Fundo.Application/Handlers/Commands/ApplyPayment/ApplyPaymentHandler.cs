@@ -43,12 +43,12 @@ public class ApplyPaymentHandler : IRequestHandler<ApplyPaymentCommand, Result<L
     {
         if (loan.Status == LoanStatus.Paid)
         {
-            return Result.Failure("Loan is already paid.", ErrorType.Validation);
+            return Result.Failure("Loan is already paid.", ErrorType.Failure);
         }
 
         if (request.Amount > loan.CurrentBalance)
         {
-            return Result.Failure("Payment cannot be greater than current balance.", ErrorType.Validation);
+            return Result.Failure("Payment cannot be greater than current balance.", ErrorType.Failure);
         }
 
         loan.CurrentBalance -= request.Amount;

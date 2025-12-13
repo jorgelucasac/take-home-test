@@ -1,5 +1,6 @@
 using Fundo.Application.DependencyInjections;
 using Fundo.Infrastructure.Persistence.DependencyInjections;
+using Fundo.Infrastructure.Persistence.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ app.MapControllers();
 
 try
 {
+    await LoanSeed.EnsureSeededAsync(app.Services);
     await app.RunAsync();
 }
 catch (Exception ex)

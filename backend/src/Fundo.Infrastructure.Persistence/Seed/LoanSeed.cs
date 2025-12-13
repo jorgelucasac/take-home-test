@@ -1,13 +1,17 @@
 ﻿using Fundo.Domain.Entities;
 using Fundo.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Fundo.Infrastructure.Persistence.Seed;
 
 public static class LoanSeed
 {
-    public static async Task EnsureSeededAsync(AppDbContext db, CancellationToken cancellationToken = default)
+    public static async Task EnsureSeededAsync(IServiceProvider provider, CancellationToken cancellationToken = default)
     {
+        var scope = provider.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
         if (await db.Loans.AnyAsync(cancellationToken)) return;
 
         var loans = new List<Loan>
