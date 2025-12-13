@@ -2,15 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Fundo.Infrastructure.Persistence.Configurations
+namespace Fundo.Infrastructure.Persistence.Configurations;
+
+public abstract class BaseEntityConfiguration<T> : IEntityTypeConfiguration<T> where T : BaseEntity
 {
-    public abstract class BaseEntityConfiguration<T> : IEntityTypeConfiguration<T> where T : BaseEntity
+    public virtual void Configure(EntityTypeBuilder<T> builder)
     {
-        public virtual void Configure(EntityTypeBuilder<T> builder)
-        {
-            builder.HasKey(e => e.Id);
-            builder.Property(e => e.CreatedAt)
-                   .IsRequired();
-        }
+        builder.HasKey(e => e.Id);
+        builder.Property(e => e.CreatedAt)
+               .IsRequired();
     }
 }
