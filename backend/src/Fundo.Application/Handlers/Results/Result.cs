@@ -18,9 +18,23 @@
             IsSuccess = isSuccess;
         }
 
+        public static Result Success() => new Result(true, null!);
+
         public static Result<T> Success<T>(T value) => new Result<T>(value);
 
         public static Result<T> Failure<T>(Error error) => new Result<T>(false, error);
+
+        public static Result<T> Failure<T>(string message, ErrorType errorType = ErrorType.Failure, List<KeyValuePair<string, string>>? details = null)
+        {
+            var error = Error.Create(message, errorType, details);
+            return new Result<T>(false, error);
+        }
+
+        public static Result Failure(string message, ErrorType errorType = ErrorType.Failure, List<KeyValuePair<string, string>>? details = null)
+        {
+            var error = Error.Create(message, errorType, details);
+            return new Result(false, error);
+        }
     }
 
     public class Result<TValue> : Result
