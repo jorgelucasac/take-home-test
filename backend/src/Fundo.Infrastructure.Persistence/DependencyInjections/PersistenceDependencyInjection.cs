@@ -6,9 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Fundo.Infrastructure.Persistence.DependencyInjections;
 
-public static class SqlServerDependencyInjection
+public static class PersistenceDependencyInjection
 {
-    public static IServiceCollection AddSqlServerInfrastructure(this IServiceCollection services, IConfiguration configuration, bool isDevelopment = false)
+    public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration, bool isDevelopment = false)
     {
         services.ConfigureSqlServerDbContext(configuration, isDevelopment);
         services.AddRepositories();
