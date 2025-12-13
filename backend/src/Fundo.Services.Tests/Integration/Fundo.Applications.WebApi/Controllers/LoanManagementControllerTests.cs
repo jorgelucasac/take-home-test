@@ -2,6 +2,7 @@ using FluentAssertions;
 using Fundo.Application.Handlers.Commands.CreateLoan;
 using Fundo.Application.Handlers.Shared;
 using Fundo.Services.Tests.Integration.Fixtures;
+using Fundo.WebApi.Transport.Rerquest;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -24,7 +25,7 @@ namespace Fundo.Services.Tests.Integration.Fundo.Applications.WebApi.Controllers
         }
 
         [Fact]
-        public async Task GetBalances_ShouldReturnExpectedResult()
+        public async Task GetLoans_ShouldReturnExpectedResult()
         {
             var response = await _client.GetAsync("/loans");
             var result = await response.Content.ReadFromJsonAsync<List<LoanResponse>>();
@@ -40,13 +41,47 @@ namespace Fundo.Services.Tests.Integration.Fundo.Applications.WebApi.Controllers
             var create = new CreateLoanCommand(1500m, 500m, "Maria Silva");
 
             var createdResp = await _client.PostAsJsonAsync("/loans", create);
-            Assert.Equal(HttpStatusCode.Created, createdResp.StatusCode);
+            createdResp.StatusCode.Should().Be(HttpStatusCode.Created);
 
             var created = await createdResp.Content.ReadFromJsonAsync<LoanResponse>();
-            Assert.NotNull(created);
+            created.Should().NotBeNull();
 
             var getResp = await _client.GetAsync($"/loans/{created!.Id}");
-            Assert.Equal(HttpStatusCode.OK, getResp.StatusCode);
+            getResp.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task CreateLoan_WithInvalidData_ShouldReturnBadRequest()
+        {
+            var create = new CreateLoanCommand(-100m, 50m, "");
+            var response = await _client.PostAsJsonAsync("/loans", create);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task GetLoan_ByNonExistentId_ShouldReturnNotFound()
+        {
+            var response = await _client.GetAsync($"/loans/{int.MaxValue}");
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
+        public async Task CreateLoan_Then_PostPayment_ShouldWork()
+        {
+            var create = new CreateLoanCommand(1500m, 500m, "Maria Silva");
+
+            var createdResp = await _client.PostAsJsonAsync("/loans", create);
+            createdResp.StatusCode.Should().Be(HttpStatusCode.Created);
+            var created = await createdResp.Content.ReadFromJsonAsync<LoanResponse>();
+            created.Should().NotBeNull();
+
+            var payment = new PaymentRequest { Amount = 500m };
+            var paymentResp = await _client.PostAsJsonAsync($"/loans/{created!.Id}/payment", payment);
+            paymentResp.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            var updated = await paymentResp.Content.ReadFromJsonAsync<LoanResponse>();
+            updated.Should().NotBeNull();
+            updated!.CurrentBalance.Should().Be(created.CurrentBalance - payment.Amount);
         }
 
         public Task InitializeAsync()
