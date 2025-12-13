@@ -7,7 +7,8 @@ namespace Fundo.Applications.WebApi.Controllers
     public class LoanManagementController : Controller
     {
         [HttpGet]
-        public Task<ActionResult> Get() {
+        public Task<ActionResult> Get()
+        {
             return Task.FromResult<ActionResult>(Ok());
         }
     }
