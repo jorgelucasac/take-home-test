@@ -23,7 +23,7 @@ public static class PersistenceDependencyInjection
             {
                 sql.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
                 sql.EnableRetryOnFailure(
-                    maxRetryCount: 5,
+                    maxRetryCount: 3,
                     maxRetryDelay: TimeSpan.FromSeconds(30),
                     errorNumbersToAdd: null);
 
