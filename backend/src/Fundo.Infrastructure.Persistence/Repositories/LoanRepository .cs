@@ -26,7 +26,7 @@ internal class LoanRepository : ILoanRepository
         return await _db.Loans.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
-    public async Task<IReadOnlyList<Loan>> ListAsync(CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<Loan>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return await _db.Loans
             .AsNoTracking()
