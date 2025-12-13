@@ -1,15 +1,16 @@
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace Fundo.Services.Tests.Integration
 {
-    public class LoanManagementControllerTests : IClassFixture<WebApplicationFactory<Fundo.Applications.WebApi.Startup>>
+    public class LoanManagementControllerTests : IClassFixture<WebApplicationFactory<Program>>
     {
         private readonly HttpClient _client;
 
-        public LoanManagementControllerTests(WebApplicationFactory<Fundo.Applications.WebApi.Startup> factory)
+        public LoanManagementControllerTests(WebApplicationFactory<Program> factory)
         {
             _client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {

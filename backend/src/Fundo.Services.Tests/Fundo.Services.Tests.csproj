@@ -22,8 +22,4 @@
 		</PackageReference>
 	</ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\Fundo.Applications.WebApi\Fundo.Applications.WebApi.csproj" />
-	</ItemGroup>
-
 </Project>
