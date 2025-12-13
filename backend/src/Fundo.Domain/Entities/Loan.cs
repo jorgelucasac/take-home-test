@@ -1,4 +1,6 @@
-﻿namespace Fundo.Domain.Entities
+﻿using Fundo.Domain.Enums;
+
+namespace Fundo.Domain.Entities
 {
     public class Loan : BaseEntity
     {
