@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Fundo.Infrastructure.Persistence.Seed;
 
-internal static class LoanSeed
+public static class LoanSeed
 {
     public static async Task EnsureSeededAsync(AppDbContext db, CancellationToken cancellationToken = default)
     {
