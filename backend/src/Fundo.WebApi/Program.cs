@@ -1,6 +1,7 @@
 using Fundo.Application.DependencyInjections;
 using Fundo.Infrastructure.Persistence.DependencyInjections;
 using Fundo.Infrastructure.Persistence.Seed;
+using Fundo.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,7 @@ app.UseSwaggerUI();
 //app.UseHttpsRedirection();
 
 //app.UseAuthorization();
-
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.MapControllers();
 
 try

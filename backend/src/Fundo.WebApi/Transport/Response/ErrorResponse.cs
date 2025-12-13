@@ -7,7 +7,7 @@ namespace Fundo.WebApi.Transport.Response
         public string Message { get; set; }
         public List<KeyValuePair<string, string>> Details { get; set; } = new();
 
-        private ErrorResponse(string message, List<KeyValuePair<string, string>>? details = null)
+        public ErrorResponse(string message, List<KeyValuePair<string, string>>? details = null)
         {
             Message = message;
             Details = details ?? [];
