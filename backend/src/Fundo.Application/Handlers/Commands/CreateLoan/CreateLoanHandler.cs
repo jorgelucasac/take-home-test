@@ -25,7 +25,7 @@ public class CreateLoanHandler : IRequestHandler<CreateLoanCommand, Result<LoanR
         await _unitOfWork.CommitAsync(cancellationToken);
 
         var response = new LoanResponse(
-            Guid.NewGuid(),
+            loan.Id,
             request.Amount,
             request.CurrentBalance,
             request.ApplicantName,
