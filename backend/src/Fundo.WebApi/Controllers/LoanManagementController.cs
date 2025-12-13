@@ -56,7 +56,7 @@ namespace Fundo.WebApi.Controllers
             var result = await _mediator.Send(command, cancellationToken);
             if (result.IsSuccess)
             {
-                return CreatedAtAction(nameof(CreateAsync), new { id = result.Value!.Id }, result.Value);
+                return CreatedAtAction("GetById", new { id = result.Value!.Id }, result.Value);
             }
 
             return HandlerErrorResponse(result.Error!);
