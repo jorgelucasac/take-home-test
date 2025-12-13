@@ -1,11 +1,19 @@
-﻿using Fundo.Application.Handlers.Commands.CreateLoan;
+﻿using Fundo.Application.Handlers.Commands.ApplyPayment;
+using Fundo.Application.Handlers.Commands.CreateLoan;
+using Fundo.Application.Handlers.Queries.GetLoanById;
+using Fundo.Application.Handlers.Queries.GetLoans;
+using Fundo.Application.Handlers.Results;
+using Fundo.Application.Handlers.Shared;
+using Fundo.WebApi.Transport.Response;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fundo.WebApi.Controllers
 {
-    [Route("/loan")]
+    [Route("/loans")]
     [ApiController]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status404NotFound)]
     public class LoanManagementController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -16,21 +24,67 @@ namespace Fundo.WebApi.Controllers
         }
 
         [HttpGet]
-        public Task<ActionResult> Get()
+        [ProducesResponseType<IEnumerable<LoanResponse>>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAsync(CancellationToken cancellationToken = default)
         {
-            return Task.FromResult<ActionResult>(Ok());
+            var query = new GetLoansQuery();
+            var result = await _mediator.Send(query, cancellationToken);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return HandlerErrorResponse(result.Error!);
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType<LoanResponse>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var query = new GetLoanByIdQuery(id);
+            var result = await _mediator.Send(query, cancellationToken);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return HandlerErrorResponse(result.Error!);
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostAsync([FromBody] CreateLoanCommand command, CancellationToken cancellationToken = default)
+        [ProducesResponseType<LoanResponse>(StatusCodes.Status201Created)]
+        public async Task<IActionResult> CreateAsync([FromBody] CreateLoanCommand command, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(command, cancellationToken);
             if (result.IsSuccess)
             {
-                return CreatedAtAction(nameof(PostAsync), new { id = result.Value!.Id }, result.Value);
+                return CreatedAtAction(nameof(CreateAsync), new { id = result.Value!.Id }, result.Value);
             }
 
-            return BadRequest(result.Error);
+            return HandlerErrorResponse(result.Error!);
+        }
+
+        [HttpPost("{id}/payment")]
+        [ProducesResponseType<LoanResponse>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> PaymentAsync([FromBody] decimal amount, CancellationToken cancellationToken = default)
+        {
+            var command = new ApplyPaymentCommand(Guid.NewGuid(), amount);
+            var result = await _mediator.Send(command, cancellationToken);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+
+            return HandlerErrorResponse(result.Error!);
+        }
+
+        protected IActionResult HandlerErrorResponse(Error error)
+        {
+            return error.Type switch
+            {
+                ErrorType.Failure => BadRequest(ErrorResponse.From(error)),
+                ErrorType.Validation => BadRequest(ErrorResponse.From(error)),
+                ErrorType.NotFound => NotFound(ErrorResponse.From(error)),
+                _ => BadRequest(ErrorResponse.From(error))
+            };
         }
     }
 }
