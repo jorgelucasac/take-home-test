@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Fundo.Domain.Repositories;
+using Fundo.Infrastructure.Persistence.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,11 +10,12 @@ public static class SqlServerDependencyInjection
 {
     public static IServiceCollection AddSqlServerInfrastructure(this IServiceCollection services, IConfiguration configuration, bool isDevelopment = false)
     {
-        ConfigureSqlServerDbContext(services, configuration, isDevelopment);
+        services.ConfigureSqlServerDbContext(configuration, isDevelopment);
+        services.AddRepositories();
         return services;
     }
 
-    private static void ConfigureSqlServerDbContext(IServiceCollection services, IConfiguration configuration, bool isDevelopment)
+    private static void ConfigureSqlServerDbContext(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
         services.AddDbContext<AppDbContext>(options =>
@@ -27,5 +30,11 @@ public static class SqlServerDependencyInjection
                 options.EnableDetailedErrors(isDevelopment);
                 options.EnableSensitiveDataLogging(isDevelopment);
             }));
+    }
+
+    private static void AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ILoanRepository, LoanRepository>();
     }
 }
