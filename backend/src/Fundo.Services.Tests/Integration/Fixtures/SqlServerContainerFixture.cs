@@ -35,7 +35,6 @@ namespace Fundo.Services.Tests.Integration.Fixtures
             }
             catch
             {
-                // ajuda MUITO a entender o porquê travou
                 var logs = await _container.GetLogsAsync();
                 throw new Exception($"SQL Server container failed to start.\n\nLOGS:\n{logs}");
             }
