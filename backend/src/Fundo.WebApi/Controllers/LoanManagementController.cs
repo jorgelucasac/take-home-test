@@ -4,6 +4,7 @@ using Fundo.Application.Handlers.Queries.GetLoanById;
 using Fundo.Application.Handlers.Queries.GetLoans;
 using Fundo.Application.Handlers.Results;
 using Fundo.Application.Handlers.Shared;
+using Fundo.WebApi.Transport.Rerquest;
 using Fundo.WebApi.Transport.Response;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +37,7 @@ namespace Fundo.WebApi.Controllers
             return HandlerErrorResponse(result.Error!);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         [ProducesResponseType<LoanResponse>(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
@@ -62,11 +63,11 @@ namespace Fundo.WebApi.Controllers
             return HandlerErrorResponse(result.Error!);
         }
 
-        [HttpPost("{id}/payment")]
+        [HttpPost("{id:guid}/payment")]
         [ProducesResponseType<LoanResponse>(StatusCodes.Status200OK)]
-        public async Task<IActionResult> PaymentAsync([FromBody] decimal amount, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> PaymentAsync(Guid id, [FromBody] PaymentRequest request, CancellationToken cancellationToken = default)
         {
-            var command = new ApplyPaymentCommand(Guid.NewGuid(), amount);
+            var command = new ApplyPaymentCommand(id, request.Amount);
             var result = await _mediator.Send(command, cancellationToken);
             if (result.IsSuccess)
             {
