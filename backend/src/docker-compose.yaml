@@ -1,0 +1,28 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: fundo-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Dev@123456"
+    ports:
+      - "1433:1433"
+    volumes:
+      - fundo_sqlserver_data:/var/opt/mssql
+
+  webapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fundo-webapi
+    depends_on:
+      - sqlserver
+    environment:
+      ASPNETCORE_URLS: "http://+:8080"
+      ASPNETCORE_ENVIRONMENT: "Production"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=FundoDb;User Id=sa;Password=Dev@123456;TrustServerCertificate=True;"
+    ports:
+      - "8080:8080"
+
+volumes:
+  fundo_sqlserver_data:
