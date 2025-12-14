@@ -39,5 +39,6 @@ jobs:
         working-directory: backend/src
 
       - name: Test
-        run: dotnet test src.sln --configuration Release --no-build --logger "trx;LogFileName=test_results.trx"
+        #run: dotnet test src.sln --configuration Release --no-build --logger "trx;LogFileName=test_results.trx"
+        run: dotnet test --no-restore --verbosity normal
         working-directory: backend/src
