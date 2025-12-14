@@ -1,3 +1,3 @@
 export const environment = {
-  loanApiBaseUrl: 'https://localhost:55569',
+  loanApiBaseUrl: 'http://localhost:8080',
 };

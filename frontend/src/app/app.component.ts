@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
         this.loading = false;
       },
       error: (err) => {
-        this.error = 'Erro ao carregar loans (verifique CORS/HTTPS).';
+        this.error = 'Failed to load loans (check CORS/HTTPS).';
         this.loading = false;
         console.error(err);
       },
