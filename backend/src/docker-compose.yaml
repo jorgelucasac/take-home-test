@@ -9,6 +9,12 @@ services:
       - "1433:1433"
     volumes:
       - fundo_sqlserver_data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/1433'"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 20s
 
   webapi:
     build:
@@ -16,7 +22,8 @@ services:
       dockerfile: Dockerfile
     container_name: fundo-webapi
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_healthy
     environment:
       ASPNETCORE_URLS: "http://+:8080"
       ASPNETCORE_ENVIRONMENT: "Production"
