@@ -10,61 +10,60 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Fundo.Services.Tests.Unit.Features
+namespace Fundo.Services.Tests.Unit.Features;
+
+public class GetLoansHandlerTests
 {
-    public class GetLoansHandlerTests
+    private readonly Mock<ILoanRepository> _loanRepositoryMock;
+    private readonly GetLoansHandler _handler;
+
+    public GetLoansHandlerTests()
     {
-        private readonly Mock<ILoanRepository> _loanRepositoryMock;
-        private readonly GetLoansHandler _handler;
+        _loanRepositoryMock = new Mock<ILoanRepository>();
+        _handler = new GetLoansHandler(_loanRepositoryMock.Object);
+    }
 
-        public GetLoansHandlerTests()
-        {
-            _loanRepositoryMock = new Mock<ILoanRepository>();
-            _handler = new GetLoansHandler(_loanRepositoryMock.Object);
-        }
+    [Fact]
+    public async Task Handle_CallsGetAllAsyncOnRepository()
+    {
+        // Arrange
+        _loanRepositoryMock
+            .Setup(repo => repo.GetAllAsync(CancellationToken.None))
+            .ReturnsAsync(new List<Loan>());
+        var query = new GetLoansQuery();
+        // Act
+        var result = await _handler.Handle(query, CancellationToken.None);
+        // Assert
+        _loanRepositoryMock.Verify(repo => repo.GetAllAsync(CancellationToken.None), Times.Once);
+    }
 
-        [Fact]
-        public async Task Handle_CallsGetAllAsyncOnRepository()
+    [Fact]
+    public async Task Handle_ReturnsLoansFromRepository()
+    {
+        // Arrange
+        var loans = new List<Loan>
         {
-            // Arrange
-            _loanRepositoryMock
-                .Setup(repo => repo.GetAllAsync(CancellationToken.None))
-                .ReturnsAsync(new List<Loan>());
-            var query = new GetLoansQuery();
-            // Act
-            var result = await _handler.Handle(query, CancellationToken.None);
-            // Assert
-            _loanRepositoryMock.Verify(repo => repo.GetAllAsync(CancellationToken.None), Times.Once);
-        }
-
-        [Fact]
-        public async Task Handle_ReturnsLoansFromRepository()
+            new(1000, 800, "Alice",LoanStatus.Active),
+            new(2000, 1500, "Bob", LoanStatus.Active)
+        };
+        _loanRepositoryMock
+            .Setup(repo => repo.GetAllAsync(CancellationToken.None))
+            .ReturnsAsync(loans);
+        var query = new GetLoansQuery();
+        // Act
+        var result = await _handler.Handle(query, CancellationToken.None);
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().NotBeNull();
+        result.Value!.Count().Should().Be(2);
+        result.Value.Should().AllSatisfy(loanResponse =>
         {
-            // Arrange
-            var loans = new List<Loan>
-            {
-                new(1000, 800, "Alice",LoanStatus.Active),
-                new(2000, 1500, "Bob", LoanStatus.Active)
-            };
-            _loanRepositoryMock
-                .Setup(repo => repo.GetAllAsync(CancellationToken.None))
-                .ReturnsAsync(loans);
-            var query = new GetLoansQuery();
-            // Act
-            var result = await _handler.Handle(query, CancellationToken.None);
-            // Assert
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().NotBeNull();
-            result.Value!.Count().Should().Be(2);
-            result.Value.Should().AllSatisfy(loanResponse =>
-            {
-                var correspondingLoan = loans.First(l => l.Id == loanResponse.Id);
-                loanResponse.Amount.Should().Be(correspondingLoan.Amount);
-                loanResponse.CurrentBalance.Should().Be(correspondingLoan.CurrentBalance);
-                loanResponse.ApplicantName.Should().Be(correspondingLoan.ApplicantName);
-                loanResponse.Status.Should().Be(correspondingLoan.Status.ToString());
-            });
-            _loanRepositoryMock.Verify(repo => repo.GetAllAsync(CancellationToken.None), Times.Once);
-        }
+            var correspondingLoan = loans.First(l => l.Id == loanResponse.Id);
+            loanResponse.Amount.Should().Be(correspondingLoan.Amount);
+            loanResponse.CurrentBalance.Should().Be(correspondingLoan.CurrentBalance);
+            loanResponse.ApplicantName.Should().Be(correspondingLoan.ApplicantName);
+            loanResponse.Status.Should().Be(correspondingLoan.Status.ToString());
+        });
+        _loanRepositoryMock.Verify(repo => repo.GetAllAsync(CancellationToken.None), Times.Once);
     }
 }
