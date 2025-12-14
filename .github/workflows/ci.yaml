@@ -49,6 +49,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      
+      - name: Show frontend files
+        run: ls -la frontend
 
       - name: Use Node.js 20
         uses: actions/setup-node@v4
@@ -62,5 +65,7 @@ jobs:
         working-directory: frontend
 
       - name: Build
-        run: npm run build --if-present
-        working-directory: frontend      
+        env:
+          NG_CLI_ANALYTICS: "false"
+        run: npm run build -- --configuration production
+        working-directory: frontend   
