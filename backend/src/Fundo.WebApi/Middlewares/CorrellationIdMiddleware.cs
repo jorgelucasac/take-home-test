@@ -4,7 +4,7 @@ namespace Fundo.WebApi.Middlewares;
 
 public class CorrellationIdMiddleware
 {
-    private const string CorrelationIdHeaderName = "X-Correlation-ID";
+    private const string CorrelationIdHeaderName = "X-Correlation-Id";
     private const string CorrelationIdLogProperty = "CorrelationId";
     private readonly RequestDelegate _next;
 
