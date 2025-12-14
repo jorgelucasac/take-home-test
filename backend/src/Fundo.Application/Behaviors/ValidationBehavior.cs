@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using Fundo.Application.Features.Results;
+using Fundo.Application.Results;
 using MediatR;
 
-namespace Fundo.Application.Features.Behaviors;
+namespace Fundo.Application.Behaviors;
 
 public sealed class ValidationBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>

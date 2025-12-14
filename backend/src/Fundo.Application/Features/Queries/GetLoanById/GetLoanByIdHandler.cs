@@ -1,5 +1,5 @@
-﻿using Fundo.Application.Features.Results;
-using Fundo.Application.Features.Shared;
+﻿using Fundo.Application.Features.Shared;
+using Fundo.Application.Results;
 using Fundo.Domain.Repositories;
 using MediatR;
 

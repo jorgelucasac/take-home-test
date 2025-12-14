@@ -1,4 +1,4 @@
-﻿namespace Fundo.Application.Features.Results;
+﻿namespace Fundo.Application.Results;
 
 public class Result
 {

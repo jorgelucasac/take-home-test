@@ -1,5 +1,5 @@
-﻿using Fundo.Application.Features.Results;
-using Fundo.Application.Features.Shared;
+﻿using Fundo.Application.Features.Shared;
+using Fundo.Application.Results;
 using MediatR;
 
 namespace Fundo.Application.Features.Commands.CreateLoan;
