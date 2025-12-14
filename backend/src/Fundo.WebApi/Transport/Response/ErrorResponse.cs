@@ -1,4 +1,4 @@
-﻿using Fundo.Application.Handlers.Results;
+﻿using Fundo.Application.Features.Results;
 
 namespace Fundo.WebApi.Transport.Response;
 

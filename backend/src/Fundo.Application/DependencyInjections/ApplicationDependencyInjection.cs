@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Fundo.Application.Handlers.Behaviors;
+using Fundo.Application.Features.Behaviors;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -1,11 +1,11 @@
-﻿using Fundo.Application.Handlers.Results;
-using Fundo.Application.Handlers.Shared;
+﻿using Fundo.Application.Features.Results;
+using Fundo.Application.Features.Shared;
 using Fundo.Domain.Entities;
 using Fundo.Domain.Enums;
 using Fundo.Domain.Repositories;
 using MediatR;
 
-namespace Fundo.Application.Handlers.Commands.ApplyPayment;
+namespace Fundo.Application.Features.Commands.ApplyPayment;
 
 public class ApplyPaymentHandler : IRequestHandler<ApplyPaymentCommand, Result<LoanResponse>>
 {

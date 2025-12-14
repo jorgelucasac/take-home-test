@@ -1,9 +1,9 @@
-﻿using Fundo.Application.Handlers.Results;
-using Fundo.Application.Handlers.Shared;
+﻿using Fundo.Application.Features.Results;
+using Fundo.Application.Features.Shared;
 using Fundo.Domain.Repositories;
 using MediatR;
 
-namespace Fundo.Application.Handlers.Queries.GetLoanById;
+namespace Fundo.Application.Features.Queries.GetLoanById;
 
 public class GetLoanByIdHandler : IRequestHandler<GetLoanByIdQuery, Result<LoanResponse>>
 {

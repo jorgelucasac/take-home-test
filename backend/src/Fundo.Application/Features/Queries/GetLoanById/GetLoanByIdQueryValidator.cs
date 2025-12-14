@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Fundo.Application.Handlers.Queries.GetLoanById;
+namespace Fundo.Application.Features.Queries.GetLoanById;
 
 public class GetLoanByIdQueryValidator : AbstractValidator<GetLoanByIdQuery>
 {

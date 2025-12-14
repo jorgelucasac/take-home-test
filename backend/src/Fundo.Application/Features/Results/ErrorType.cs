@@ -1,4 +1,4 @@
-﻿namespace Fundo.Application.Handlers.Results;
+﻿namespace Fundo.Application.Features.Results;
 
 public enum ErrorType
 {

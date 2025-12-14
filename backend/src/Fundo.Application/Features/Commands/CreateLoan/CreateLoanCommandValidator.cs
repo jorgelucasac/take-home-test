@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Fundo.Application.Handlers.Commands.CreateLoan;
+namespace Fundo.Application.Features.Commands.CreateLoan;
 
 public sealed class CreateLoanCommandValidator : AbstractValidator<CreateLoanCommand>
 {

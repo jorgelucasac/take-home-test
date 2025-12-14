@@ -1,9 +1,9 @@
-﻿using Fundo.Application.Handlers.Commands.ApplyPayment;
-using Fundo.Application.Handlers.Commands.CreateLoan;
+﻿using Fundo.Application.Features.Commands.CreateLoan;
+using Fundo.Application.Features.Results;
+using Fundo.Application.Features.Shared;
+using Fundo.Application.Handlers.Commands.ApplyPayment;
 using Fundo.Application.Handlers.Queries.GetLoanById;
 using Fundo.Application.Handlers.Queries.GetLoans;
-using Fundo.Application.Handlers.Results;
-using Fundo.Application.Handlers.Shared;
 using Fundo.WebApi.Transport.Rerquest;
 using Fundo.WebApi.Transport.Response;
 using MediatR;
