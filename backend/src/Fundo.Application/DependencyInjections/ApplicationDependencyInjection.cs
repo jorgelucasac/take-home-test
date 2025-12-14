@@ -10,8 +10,7 @@ public static class ApplicationDependencyInjection
     public static void AddApplication(this IServiceCollection services)
     {
         var assembly = typeof(ApplicationDependencyInjection).Assembly;
-
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
+        services.AddMediatR(cfg => cfg.AsScoped(), assembly);
         services.AddValidatorsFromAssembly(assembly);
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
     }
