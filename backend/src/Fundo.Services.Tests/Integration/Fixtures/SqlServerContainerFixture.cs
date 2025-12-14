@@ -8,24 +8,15 @@ namespace Fundo.Services.Tests.Integration.Fixtures;
 
 public sealed class SqlServerContainerFixture : IAsyncLifetime
 {
-    private readonly MsSqlContainer? _container;
+    private readonly MsSqlContainer _container;
 
-    public string ConnectionString { get; private set; }
+    public string ConnectionString => _container.GetConnectionString();
 
     public SqlServerContainerFixture()
     {
-        var connectionString = Environment.GetEnvironmentVariable("INTEGRATION_DB_CONNECTIONSTRING");
-
-        if (!string.IsNullOrWhiteSpace(connectionString))
-        {
-            ConnectionString = connectionString;
-            return;
-        }
-
         _container = new MsSqlBuilder()
             .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
             .WithPassword("Dev@123456")
-            //.WithEnvironment("ACCEPT_EULA", "Y")
             .WithCleanUp(true)
             .WithPortBinding(1434, true)
             .WithWaitStrategy(
@@ -44,7 +35,6 @@ public sealed class SqlServerContainerFixture : IAsyncLifetime
         try
         {
             await _container.StartAsync();
-            ConnectionString = _container.GetConnectionString();
         }
         catch
         {
@@ -53,5 +43,5 @@ public sealed class SqlServerContainerFixture : IAsyncLifetime
         }
     }
 
-    public Task DisposeAsync() => _container?.DisposeAsync().AsTask() ?? Task.CompletedTask;
+    public Task DisposeAsync() => _container.DisposeAsync().AsTask();
 }
