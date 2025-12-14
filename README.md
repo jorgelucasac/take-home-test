@@ -1,83 +1,256 @@
-# **Take-Home Test: Backend-Focused Full-Stack Developer (.NET C# & Angular)**
 
-## **Objective**
+# Take-Home Test – Full Stack Application
 
-This take-home test evaluates your ability to develop and integrate a .NET Core (C#) backend with an Angular frontend, focusing on API design, database integration, and basic DevOps practices.
+  
 
-## **Instructions**
+This repository contains a **full-stack application** composed of:
 
-1.  **Fork the provided repository** before starting the implementation.
-2.  Implement the requested features in your forked repository.
-3.  Once you have completed the implementation, **send the link** to your forked repository via email for review.
+  
 
-## **Task**
+-  **Backend**: ASP.NET Core (.NET 8) API
 
-You will build a simple **Loan Management System** with a **.NET Core backend (C#)** exposing RESTful APIs and a **basic Angular frontend** consuming these APIs.
+-  **Frontend**: Angular
 
----
+-  **Database**: SQL Server
 
-## **Requirements**
+-  **Infrastructure**: Docker & Docker Compose
 
-### **1. Backend (API) - .NET Core**
+  
 
-* Create a **RESTful API** in .NET Core to handle **loan applications**.
-* Implement the following endpoints:
-    * `POST /loans` → Create a new loan.
-    * `GET /loans/{id}` → Retrieve loan details.
-    * `GET /loans` → List all loans.
-    * `POST /loans/{id}/payment` → Deduct from `currentBalance`.
-* Loan example (feel free to improve it):
+The project was designed to demonstrate **software engineering best practices**, including **clean architecture**, **separation of concerns**, **testability**, and **containerized execution**.
 
-    ```json
-    {
-        "amount": 1500.00, // Amount requested
-        "currentBalance": 500.00, // Remaining balance
-        "applicantName": "Maria Silva", // User name
-        "status": "active" // Status can be active or paid
-    }
-    ```
-
-* Use **Entity Framework Core** with **SQL Server**.
-* Create seed data to populate the loans (the frontend will consume this).
-* Write **unit/integration tests for the API** (xUnit or NUnit).
-* **Dockerize** the backend and create a **Docker Compose** file.
-* Create a README with setup instructions.
-
-### **2. Frontend - Angular (Simplified UI)**  
-
-Develop a **lightweight Angular app** to interact with the backend
-
-#### **Features:**  
-- A **table** to display a list of existing loans.  
-
-#### **Mockup:**  
-[View Mockup](https://kzmgtjqt0vx63yji8h9l.lite.vusercontent.net/)  
-(*The design doesn’t need to be an exact replica of the mockup—it serves as a reference. Aim to keep it as close as possible.*)  
+  
 
 ---
 
-## **Bonus (Optional, Not Required)**
+  
 
-* **Improve error handling and logging** with structured logs.
-* Implement **authentication**.
-* Create a **GitHub Actions** pipeline for building and testing the backend.
+## Project overview
+
+  
+
+- Backend follows **Clean Architecture principles**
+
+- Application layer uses **CQRS with MediatR**
+
+- Validation is handled via **FluentValidation**
+
+- Persistence with **EF Core 8 + SQL Server**
+
+- Structured logging with **Serilog**
+
+- API documentation via **Swagger**
+
+- Automated **unit tests** and **integration tests** using **Testcontainers**
+
+- Frontend built with **Angular**, consuming the backend API
+
+  
 
 ---
 
-## **Evaluation Criteria**
+  
 
-✔ **Code quality** (clean architecture, modularization, best practices).
+## How to run the project
 
-✔ **Functionality** (the API and frontend should work as expected).
+  
 
-✔ **Security considerations** (authentication, validation, secure API handling).
+### Backend (Docker Compose)
 
-✔ **Testing coverage** (unit tests for critical backend functions).
+  
 
-✔ **Basic DevOps implementation** (Docker for backend).
+#### Requirements
+
+- Docker
+
+- Docker Compose
+
+  
+
+#### Steps
+
+  
+
+1. Navigate to the backend folder:
+
+```bash
+
+cd backend/src
+
+```
+
+  
+
+2. Build and start the services (API + SQL Server):
+
+```bash
+
+docker compose up --build
+
+```
+
+  
+
+3. After startup:
+
+- API: `http://localhost:8080`
+
+- Swagger: `http://localhost:8080/swagger`
+
+  
+
+> The `docker-compose.yaml` file already configures the SQL Server connection string and ensures the API only starts after the database becomes healthy.
+
+  
 
 ---
 
-## **Additional Information**
+  
 
-Candidates are encouraged to include a `README.md` file in their repository detailing their implementation approach, any challenges they faced, features they couldn't complete, and any improvements they would make given more time. Ideally, the implementation should be completed within **two days** of starting the test.
+### Frontend (Angular)
+
+  
+
+#### Requirements
+
+- Node.js 20+
+
+- NPM
+
+  
+
+#### Steps
+
+  
+
+1. Install dependencies:
+
+```bash
+
+cd frontend
+
+npm install
+
+```
+
+  
+
+2. Start the development server:
+
+```bash
+
+npm start
+
+```
+
+  
+
+3. Access the application at:
+
+```
+
+http://localhost:4200/
+
+```
+
+  
+
+---
+
+  
+
+## Backend documentation (architecture & tests)
+
+  
+
+The backend contains **detailed documentation** covering:
+
+  
+
+- Architectural decisions
+
+- Project structure and responsibilities
+
+- API endpoints
+
+- Docker setup
+
+- Integration tests using **Testcontainers**
+
+  
+
+📘 Full backend documentation:
+
+https://github.com/jorgelucasac/take-home-test/tree/main/backend/src
+
+  
+
+---
+
+  
+
+## Testing strategy
+
+  
+
+-  **Unit tests**
+
+- Validate business rules and application logic
+
+- Use xUnit, Moq, and FluentAssertions
+
+  
+
+-  **Integration tests**
+
+- Spin up a real SQL Server using **Testcontainers**
+
+- Execute real HTTP requests against the API
+
+- Apply migrations and seed data automatically
+
+  
+
+> Integration tests require Docker to be installed and running.
+
+  
+
+---
+
+  
+
+## What is being evaluated
+
+  
+
+This project aims to demonstrate:
+
+  
+
+- Code organization and readability
+
+- Proper use of architectural patterns
+
+- Separation of concerns
+
+- Testability and automated testing
+
+- Containerized development setup
+
+- Clear and maintainable documentation
+
+  
+
+---
+
+  
+
+## Notes for reviewers
+
+  
+
+- The project is fully executable via Docker with minimal setup.
+
+- Backend and frontend can also be run independently for local development.
+
+- The backend README contains deeper technical details for architectural review.
