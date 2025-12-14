@@ -1,41 +1,26 @@
 using Fundo.Application.DependencyInjections;
 using Fundo.Infrastructure.Persistence.DependencyInjections;
 using Fundo.Infrastructure.Persistence.Seed;
+using Fundo.WebApi.Extensions;
 using Fundo.WebApi.Extensions.Swagger;
-using Fundo.WebApi.Middlewares;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.OperationFilter<AddCorrelationHeaderOperationFilter>();
-});
+builder.Services.AddSwaggerCustom();
 builder.Services.AddPersistence(builder.Configuration, builder.Environment.IsDevelopment());
 builder.Services.AddApplication();
+builder.Host.AddSerilog();
 
-builder.Host.UseSerilog((context, services, configuration) =>
-{
-    configuration
-        .ReadFrom.Configuration(context.Configuration)
-        .Enrich.FromLogContext()
-        .Enrich.WithProperty("Application", "Fundo.WebApi")
-        .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName);
-});
-
+builder.Services.AddCorsPolicy("AngularDev");
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerCustom();
 
-//app.UseHttpsRedirection();
-
-//app.UseAuthorization();
-app.UseMiddleware<CorrellationIdMiddleware>();
-app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseCors("AngularDev");
+app.UseCustomMiddleware();
 app.UseSerilogRequestLogging();
 app.MapControllers();
 
