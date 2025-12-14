@@ -11,8 +11,6 @@ public static class LoanSeed
     {
         var scope = provider.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        //db.Database.EnsureDeleted();
-
         try
         {
             var has = await db.Loans.AnyAsync(cancellationToken);
