@@ -4,6 +4,7 @@ using Fundo.Domain.Entities;
 using Fundo.Domain.Enums;
 using Fundo.Domain.Repositories;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Fundo.Application.Features.Commands.ApplyPayment;
 
@@ -11,11 +12,16 @@ public class ApplyPaymentHandler : IRequestHandler<ApplyPaymentCommand, Result<L
 {
     private readonly ILoanRepository _loanRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ApplyPaymentHandler> _logger;
 
-    public ApplyPaymentHandler(ILoanRepository loanRepository, IUnitOfWork unitOfWork)
+    public ApplyPaymentHandler(
+        ILoanRepository loanRepository,
+        IUnitOfWork unitOfWork,
+        ILogger<ApplyPaymentHandler> logger)
     {
         _loanRepository = loanRepository;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<Result<LoanResponse>> Handle(ApplyPaymentCommand request, CancellationToken cancellationToken)
@@ -23,14 +29,15 @@ public class ApplyPaymentHandler : IRequestHandler<ApplyPaymentCommand, Result<L
         var loan = await _loanRepository.GetByIdForUpdateAsync(request.Id, cancellationToken);
         if (loan == null)
         {
-            var error = Error.NotFound("Loan not found.");
-            return Result.Failure<LoanResponse>(error);
+            _logger.LogWarning("Loan with ID {LoanId} not found.", request.Id);
+            return Result.Failure<LoanResponse>("Loan not found.");
         }
 
         var result = ApplyPayment(loan, request);
 
         if (result.IsFailure)
         {
+            _logger.LogWarning("Failed to apply payment to Loan ID {LoanId}: {ErrorMessage}", request.Id, result.Error!.Message);
             return Result.Failure<LoanResponse>(result.Error!);
         }
 
@@ -43,12 +50,12 @@ public class ApplyPaymentHandler : IRequestHandler<ApplyPaymentCommand, Result<L
     {
         if (loan.Status == LoanStatus.Paid)
         {
-            return Result.Failure("Loan is already paid.", ErrorType.Failure);
+            return Result.Failure("Loan is already paid.");
         }
 
         if (request.Amount > loan.CurrentBalance)
         {
-            return Result.Failure("Payment cannot be greater than current balance.", ErrorType.Failure);
+            return Result.Failure("Payment cannot be greater than current balance.");
         }
 
         loan.CurrentBalance -= request.Amount;

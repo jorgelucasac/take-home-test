@@ -1,6 +1,6 @@
 using FluentAssertions;
+using Fundo.Application.Features.Commands.CreateLoan;
 using Fundo.Application.Features.Shared;
-using Fundo.Application.Handlers.Commands.CreateLoan;
 using Fundo.Services.Tests.Integration.Fixtures;
 using Fundo.WebApi.Transport.Rerquest;
 using System.Collections.Generic;
