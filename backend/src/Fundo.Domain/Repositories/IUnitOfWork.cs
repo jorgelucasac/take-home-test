@@ -1,7 +1,6 @@
-﻿namespace Fundo.Domain.Repositories
+﻿namespace Fundo.Domain.Repositories;
+
+public interface IUnitOfWork
 {
-    public interface IUnitOfWork
-    {
-        Task<int> CommitAsync(CancellationToken cancellationToken = default);
-    }
+    Task<int> CommitAsync(CancellationToken cancellationToken = default);
 }

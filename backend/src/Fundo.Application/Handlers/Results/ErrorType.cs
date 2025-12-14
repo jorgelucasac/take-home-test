@@ -1,9 +1,8 @@
-﻿namespace Fundo.Application.Handlers.Results
+﻿namespace Fundo.Application.Handlers.Results;
+
+public enum ErrorType
 {
-    public enum ErrorType
-    {
-        Failure = 0,
-        Validation = 1,
-        NotFound = 3,
-    }
+    Failure = 0,
+    Validation = 1,
+    NotFound = 3,
 }

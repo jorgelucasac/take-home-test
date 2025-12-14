@@ -1,7 +1,6 @@
-﻿namespace Fundo.WebApi.Transport.Rerquest
+﻿namespace Fundo.WebApi.Transport.Rerquest;
+
+public class PaymentRequest
 {
-    public class PaymentRequest
-    {
-        public decimal Amount { get; set; }
-    }
+    public decimal Amount { get; set; }
 }

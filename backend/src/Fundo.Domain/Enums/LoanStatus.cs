@@ -1,8 +1,7 @@
-﻿namespace Fundo.Domain.Enums
+﻿namespace Fundo.Domain.Enums;
+
+public enum LoanStatus
 {
-    public enum LoanStatus
-    {
-        Active = 0,
-        Paid = 1
-    }
+    Active = 0,
+    Paid = 1
 }
