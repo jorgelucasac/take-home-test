@@ -75,7 +75,7 @@ namespace Fundo.Services.Tests.Integration.Fundo.Applications.WebApi.Controllers
             var created = await createdResp.Content.ReadFromJsonAsync<LoanResponse>();
             created.Should().NotBeNull();
 
-            var payment = new PaymentRequest { Amount = 500m };
+            var payment = new PaymentRequest(500m);
             var paymentResp = await _client.PostAsJsonAsync($"/loans/{created!.Id}/payment", payment);
             paymentResp.StatusCode.Should().Be(HttpStatusCode.OK);
 

@@ -1,6 +1,9 @@
-﻿namespace Fundo.WebApi.Transport.Rerquest;
+﻿using Fundo.Application.Features.Commands.ApplyPayment;
 
-public class PaymentRequest
+namespace Fundo.WebApi.Transport.Rerquest;
+
+public record PaymentRequest(decimal Amount)
 {
-    public decimal Amount { get; set; }
+    public ApplyPaymentCommand ToCommand(Guid loanId)
+        => new(loanId, Amount);
 }

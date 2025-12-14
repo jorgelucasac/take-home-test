@@ -1,6 +1,4 @@
-﻿using Fundo.Application.Features.Commands.ApplyPayment;
-using Fundo.Application.Features.Commands.CreateLoan;
-using Fundo.Application.Features.Queries.GetLoanById;
+﻿using Fundo.Application.Features.Queries.GetLoanById;
 using Fundo.Application.Features.Queries.GetLoans;
 using Fundo.Application.Features.Shared;
 using Fundo.Application.Results;
@@ -52,9 +50,9 @@ public class LoanManagementController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType<LoanResponse>(StatusCodes.Status201Created)]
-    public async Task<IActionResult> CreateAsync([FromBody] CreateLoanCommand command, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CreateAsync([FromBody] CreateLoanRequest request, CancellationToken cancellationToken = default)
     {
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(request.ToCommand(), cancellationToken);
         if (result.IsSuccess)
         {
             return CreatedAtAction("GetById", new { id = result.Value!.Id }, result.Value);
@@ -67,8 +65,7 @@ public class LoanManagementController : ControllerBase
     [ProducesResponseType<LoanResponse>(StatusCodes.Status200OK)]
     public async Task<IActionResult> PaymentAsync(Guid id, [FromBody] PaymentRequest request, CancellationToken cancellationToken = default)
     {
-        var command = new ApplyPaymentCommand(id, request.Amount);
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(request.ToCommand(id), cancellationToken);
         if (result.IsSuccess)
         {
             return Ok(result.Value);
