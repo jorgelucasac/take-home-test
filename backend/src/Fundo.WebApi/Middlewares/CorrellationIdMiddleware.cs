@@ -20,7 +20,7 @@ public class CorrellationIdMiddleware
             correlationId = Guid.NewGuid().ToString();
         }
         context.Response.Headers.TryAdd(CorrelationIdHeaderName, correlationId);
-        using var _ = LogContext.PushProperty(CorrelationIdLogProperty, correlationId);
+        using var _ = LogContext.PushProperty(CorrelationIdLogProperty, correlationId.FirstOrDefault());
         await _next(context);
     }
 }
