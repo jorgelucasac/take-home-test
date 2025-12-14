@@ -13,6 +13,7 @@ jobs:
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: true
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+      INTEGRATION_DB_CONNECTIONSTRING: "Server=localhost,1433;Database=FundoDb;User Id=sa;Password=Dev@123456;TrustServerCertificate=True;"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -38,7 +39,13 @@ jobs:
         run: dotnet build src.sln --configuration Release --no-restore
         working-directory: backend/src
 
+      - name: Start integration database
+        run: docker compose -f backend/src/Fundo.Services.Tests/Integration/docker-compose.yaml up -d sqlserver #Fundo.Services.Tests\Integration
+
       - name: Test
-        #run: dotnet test src.sln --configuration Release --no-build --logger "trx;LogFileName=test_results.trx"
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test src.sln --configuration Release --no-build --logger "trx;LogFileName=test_results.trx"
         working-directory: backend/src
+
+      - name: Stop integration database
+        if: always()
+        run: docker compose -f backend/src/docker-compose.yaml down
