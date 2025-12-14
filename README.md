@@ -17,7 +17,7 @@ This repository contains a **full-stack application** composed of:
 
   
 
-The project was designed to demonstrate **software engineering best practices**, including **clean architecture**, **separation of concerns**, **testability**, and **containerized execution**.
+The project was designed to demonstrate **software engineering best practices**, including **clean architecture**, **separation of concerns**, **testability**, **containerized execution**, and **automated CI pipelines**.
 
   
 
@@ -44,6 +44,68 @@ The project was designed to demonstrate **software engineering best practices**,
 - Automated **unit tests** and **integration tests** using **Testcontainers**
 
 - Frontend built with **Angular**, consuming the backend API
+
+- Continuous Integration using **GitHub Actions**
+
+  
+
+---
+
+  
+
+## Continuous Integration (CI)
+
+  
+
+This repository includes a **CI pipeline configured with GitHub Actions**, automatically triggered on:
+
+  
+
+-  `push` to the `main` branch
+
+-  `pull_request` targeting the `main` branch
+
+  
+
+### CI responsibilities
+
+  
+
+#### Backend pipeline
+
+- Restores NuGet dependencies
+
+- Builds the solution using **.NET 8**
+
+- Runs **unit and integration tests**
+
+- Uses cache for NuGet packages to speed up execution
+
+  
+
+> Integration tests run inside the CI environment and rely on Docker (required by **Testcontainers**).
+
+  
+
+#### Frontend pipeline
+
+- Sets up **Node.js 20**
+
+- Installs dependencies using `npm ci`
+
+- Builds the Angular application in **production mode**
+
+- Uses NPM cache based on `package-lock.json`
+
+  
+
+This CI setup ensures that:
+
+- The backend is always buildable and testable
+
+- The frontend production build is validated
+
+- Pull requests are automatically verified before merge
 
   
 
@@ -236,6 +298,8 @@ This project aims to demonstrate:
 - Testability and automated testing
 
 - Containerized development setup
+
+- CI/CD awareness and automation
 
 - Clear and maintainable documentation
 
