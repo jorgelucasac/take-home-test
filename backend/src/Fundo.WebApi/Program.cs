@@ -33,7 +33,9 @@ app.UseSwaggerUI();
 //app.UseHttpsRedirection();
 
 //app.UseAuthorization();
+app.UseMiddleware<CorrellationIdMiddleware>();
 app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseSerilogRequestLogging();
 app.MapControllers();
 
 try
