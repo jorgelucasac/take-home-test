@@ -1,4 +1,4 @@
-
+[![CI](https://github.com/jorgelucasac/take-home-test/actions/workflows/ci.yaml/badge.svg)](https://github.com/jorgelucasac/take-home-test/actions/workflows/ci.yaml)
 # Take-Home Test – Full Stack Application
 
   
