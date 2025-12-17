@@ -1,6 +1,5 @@
-
 # Take-Home Test – Full Stack Application
-
+[![CI](https://github.com/jorgelucasac/take-home-test/actions/workflows/ci.yaml/badge.svg)](https://github.com/jorgelucasac/take-home-test/actions/workflows/ci.yaml)
   
 
 This repository contains a **full-stack application** composed of:
