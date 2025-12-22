@@ -19,7 +19,7 @@ public class GetLoanByIdHandler : IRequestHandler<GetLoanByIdQuery, Result<LoanR
         var loan = await _loanRepository.GetByIdAsync(request.Id, cancellationToken);
         if (loan == null)
         {
-            return Result.Failure<LoanResponse>("Loan not found.", ErrorType.NotFound);
+            return Result.NotFound<LoanResponse>("Loan not found.");
         }
         var response = new LoanResponse(
             loan.Id,
