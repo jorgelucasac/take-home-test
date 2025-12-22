@@ -7,10 +7,6 @@ namespace Fundo.Services.Tests.Unit.Entities
 {
     public class LoanTests
     {
-        public LoanTests()
-        {
-        }
-
         [Fact]
         public void CreatingLoan_WithValidData_ShouldSucceed()
         {
