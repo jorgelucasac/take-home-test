@@ -3,6 +3,7 @@ using Fundo.Application.Features.Commands.CreateLoan;
 using Fundo.Application.Features.Shared;
 using Fundo.Application.Results;
 using Fundo.Services.Tests.Integration.Fixtures;
+using MediatR;
 using Xunit;
 
 namespace Fundo.Services.Tests.Integration.Fundo.WebApi.DependencyInjection
@@ -12,7 +13,7 @@ namespace Fundo.Services.Tests.Integration.Fundo.WebApi.DependencyInjection
         [Fact]
         public void ApplicationServices_PipelineBehaviorRegistered_ShouldWork()
         {
-            Factory.Services.GetService(typeof(MediatR.IPipelineBehavior<CreateLoanCommand, Result<LoanResponse>>)).Should().NotBeNull();
+            Factory.Services.GetService(typeof(IPipelineBehavior<CreateLoanCommand, Result<LoanResponse>>)).Should().NotBeNull();
         }
     }
 }
