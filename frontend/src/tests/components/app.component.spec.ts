@@ -14,7 +14,7 @@ describe(AppComponent.name, () => {
         loansService = jasmine.createSpyObj<LoansService>('LoansService', ['getAll']);
 
         await TestBed.configureTestingModule({
-            imports: [AppComponent], // standalone component
+            imports: [AppComponent],
             providers: [{ provide: LoansService, useValue: loansService }],
         }).compileComponents();
 
@@ -39,7 +39,7 @@ describe(AppComponent.name, () => {
         expect(component.error).toBeNull();
         expect(component.loans).toEqual([]);
 
-        fixture.detectChanges(); // triggers ngOnInit
+        fixture.detectChanges();
 
         expect(loansService.getAll).toHaveBeenCalledTimes(1);
         expect(component.loans).toEqual(mockLoans);
@@ -53,7 +53,7 @@ describe(AppComponent.name, () => {
             throwError(() => new Error('Network error'))
         );
 
-        fixture.detectChanges(); // triggers ngOnInit
+        fixture.detectChanges();
 
         expect(loansService.getAll).toHaveBeenCalledTimes(1);
         expect(component.loans).toEqual([]);
@@ -80,7 +80,7 @@ describe(AppComponent.name, () => {
 
         loansService.getAll.and.returnValue(of(mockLoans));
 
-        fixture.detectChanges(); // triggers ngOnInit + subscription
+        fixture.detectChanges();
 
         // loading and error messages should be gone
         const text = fixture.nativeElement.textContent as string;
@@ -104,7 +104,7 @@ describe(AppComponent.name, () => {
         const consoleErrorSpy = spyOn(console, 'error');
         loansService.getAll.and.returnValue(throwError(() => new Error('Network error')));
 
-        fixture.detectChanges(); // triggers ngOnInit
+        fixture.detectChanges();
 
         const text = fixture.nativeElement.textContent as string;
         expect(text).not.toContain('loading...');
