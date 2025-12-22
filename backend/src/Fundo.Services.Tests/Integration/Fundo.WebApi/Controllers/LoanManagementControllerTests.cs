@@ -10,7 +10,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Fundo.Services.Tests.Integration.Fundo.Applications.WebApi.Controllers;
+namespace Fundo.Services.Tests.Integration.Fundo.WebApi.Controllers;
 
 public class LoanManagementControllerTests(SqlServerContainerFixture db) : BaseControllerTest(db)
 {
