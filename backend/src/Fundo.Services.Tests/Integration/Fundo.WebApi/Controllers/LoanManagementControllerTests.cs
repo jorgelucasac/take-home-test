@@ -12,7 +12,7 @@ using Xunit;
 
 namespace Fundo.Services.Tests.Integration.Fundo.WebApi.Controllers;
 
-public class LoanManagementControllerTests(SqlServerContainerFixture db) : BaseControllerTest(db)
+public class LoanManagementControllerTests(SqlServerContainerFixture db) : IntegrationTestBase(db)
 {
     [Fact]
     public async Task GetLoans_ShouldReturnExpectedResult()
