@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { environment } from '../../../environments/environment';
-import { LoansService } from '../../../app/services/loans.service';
-import { LoanDto } from '../../../app/dtos/loan.dto';
 import { provideHttpClient } from '@angular/common/http';
+import { LoansService } from '../../../app/services/loans.service';
+import { environment } from '../../../environments/environment';
+import { LoanDto } from '../../../app/dtos/loan.dto';
 
 describe('LoansService', () => {
   let service: LoansService;

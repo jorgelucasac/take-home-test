@@ -1,8 +1,8 @@
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './src/tests/e2e',
-  testMatch: /.*\.(spec|test)\.(ts|js)/,
+testDir: './e2e',
+  testMatch: /.*\.e2e\.spec\.ts/,
   use: {
     baseURL: 'http://localhost:4200',
     headless: true,

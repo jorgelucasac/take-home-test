@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
-import { AppComponent } from '../../app/app.component';
-import { LoansService } from '../../app/services/loans.service';
-import { LoanDto } from '../../app/dtos/loan.dto';
 import { By } from '@angular/platform-browser';
+import { AppComponent } from '../../../app/app.component';
+import { LoansService } from '../../../app/services/loans.service';
+import { LoanDto } from '../../../app/dtos/loan.dto';
 
 describe(AppComponent.name, () => {
     let fixture: ComponentFixture<AppComponent>;
