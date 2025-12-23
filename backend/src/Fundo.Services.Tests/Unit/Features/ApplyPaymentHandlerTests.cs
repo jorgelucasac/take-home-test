@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using Fundo.Application.Features.Commands.ApplyPayment;
 using Fundo.Domain.Entities;
-using Fundo.Domain.Enums;
 using Fundo.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -31,7 +30,7 @@ public class ApplyPaymentHandlerTests
     public async Task Handle_ValidPayment_AppliesPaymentSuccessfully()
     {
         // Arrange
-        var loan = new Loan(1000, 500, "John Doe", LoanStatus.Active);
+        var loan = new Loan(1000, 500, "John Doe");
         var command = new ApplyPaymentCommand(loan.Id, 200);
         _loanRepositoryMock
             .Setup(repo => repo.GetByIdForUpdateAsync(command.Id, CancellationToken.None))
@@ -64,7 +63,7 @@ public class ApplyPaymentHandlerTests
     public async Task Handle_PaymentGreaterThanBalance_ReturnsFailureError()
     {
         // Arrange
-        var loan = new Loan(1000, 300, "Jane Doe", LoanStatus.Active);
+        var loan = new Loan(1000, 300, "Jane Doe");
         var command = new ApplyPaymentCommand(loan.Id, 400);
         _loanRepositoryMock
             .Setup(repo => repo.GetByIdForUpdateAsync(command.Id, CancellationToken.None))
@@ -80,7 +79,9 @@ public class ApplyPaymentHandlerTests
     public async Task Handle_LoanAlreadyPaid_ReturnsFailureError()
     {
         // Arrange
-        var loan = new Loan(1000, 0, "Alice Smith", LoanStatus.Paid);
+        var loan = new Loan(1000, 1000, "Alice Smith");
+        loan.ApplyPayment(1000); // Mark loan as paid
+
         var command = new ApplyPaymentCommand(loan.Id, 100);
         _loanRepositoryMock
             .Setup(repo => repo.GetByIdForUpdateAsync(command.Id, CancellationToken.None))

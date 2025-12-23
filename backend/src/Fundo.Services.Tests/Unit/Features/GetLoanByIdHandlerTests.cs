@@ -2,7 +2,6 @@
 using Fundo.Application.Features.Queries.GetLoanById;
 using Fundo.Application.Results;
 using Fundo.Domain.Entities;
-using Fundo.Domain.Enums;
 using Fundo.Domain.Repositories;
 using Moq;
 using System;
@@ -27,7 +26,7 @@ public class GetLoanByIdHandlerTests
     public async Task Handle_LoanExists_ReturnsSuccessResult()
     {
         // Arrange
-        var loan = new Loan(1000, 500, "John Doe", LoanStatus.Active);
+        var loan = new Loan(1000, 500, "John Doe");
         var loanId = loan.Id;
         _loanRepositoryMock.Setup(repo => repo.GetByIdAsync(loanId, CancellationToken.None))
             .ReturnsAsync(loan);

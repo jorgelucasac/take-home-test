@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using Fundo.Application.Features.Queries.GetLoans;
 using Fundo.Domain.Entities;
-using Fundo.Domain.Enums;
 using Fundo.Domain.Repositories;
 using Moq;
 using System.Collections.Generic;
@@ -43,8 +42,8 @@ public class GetLoansHandlerTests
         // Arrange
         var loans = new List<Loan>
         {
-            new(1000, 800, "Alice",LoanStatus.Active),
-            new(2000, 1500, "Bob", LoanStatus.Active)
+            new(1000, 800, "Alice"),
+            new(2000, 1500, "Bob")
         };
         _loanRepositoryMock
             .Setup(repo => repo.GetAllAsync(CancellationToken.None))
