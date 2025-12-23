@@ -58,10 +58,7 @@ public class ApplyPaymentHandler : IRequestHandler<ApplyPaymentCommand, Result<L
             return Result.Failure("Payment cannot be greater than current balance.");
         }
 
-        loan.CurrentBalance -= request.Amount;
-
-        if (loan.CurrentBalance == 0)
-            loan.Status = LoanStatus.Paid;
+        loan.ApplyPayment(request.Amount);
 
         return Result.Success();
     }

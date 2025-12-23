@@ -20,7 +20,7 @@ public class CreateLoanHandler : IRequestHandler<CreateLoanCommand, Result<LoanR
 
     public async Task<Result<LoanResponse>> Handle(CreateLoanCommand request, CancellationToken cancellationToken)
     {
-        var loan = new Loan(request.Amount, request.CurrentBalance, request.ApplicantName, LoanStatus.Active);
+        var loan = new Loan(request.Amount, request.CurrentBalance, request.ApplicantName);
         await _loanRepository.AddAsync(loan, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
 
