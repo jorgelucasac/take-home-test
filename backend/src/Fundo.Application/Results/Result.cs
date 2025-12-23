@@ -30,6 +30,12 @@ public class Result
         return new Result<T>(false, error);
     }
 
+    public static Result<T> NotFound<T>(string message, List<KeyValuePair<string, string>>? details = null)
+    {
+        var error = Error.Create(message, ErrorType.NotFound, details);
+        return new Result<T>(false, error);
+    }
+
     public static Result Failure(string message, ErrorType errorType = ErrorType.Failure, List<KeyValuePair<string, string>>? details = null)
     {
         var error = Error.Create(message, errorType, details);

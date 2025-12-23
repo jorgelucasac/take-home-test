@@ -3,15 +3,16 @@ using Fundo.Application.Features.Commands.CreateLoan;
 using Fundo.Application.Features.Shared;
 using Fundo.Services.Tests.Integration.Fixtures;
 using Fundo.WebApi.Transport.Rerquest;
+using Fundo.WebApi.Transport.Response;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Fundo.Services.Tests.Integration.Fundo.Applications.WebApi.Controllers;
+namespace Fundo.Services.Tests.Integration.Fundo.WebApi.Controllers;
 
-public class LoanManagementControllerTests(SqlServerContainerFixture db) : BaseControllerTest(db)
+public class LoanManagementControllerTests(SqlServerContainerFixture db) : IntegrationTestBase(db)
 {
     [Fact]
     public async Task GetLoans_ShouldReturnExpectedResult()
@@ -71,5 +72,24 @@ public class LoanManagementControllerTests(SqlServerContainerFixture db) : BaseC
         var updated = await paymentResp.Content.ReadFromJsonAsync<LoanResponse>();
         updated.Should().NotBeNull();
         updated!.CurrentBalance.Should().Be(created.CurrentBalance - payment.Amount);
+    }
+
+    [Fact]
+    public async Task PostPayment_WithInvalidData_ShouldReturnBadRequest()
+    {
+        var create = new CreateLoanCommand(1500m, 500m, "Maria Silva");
+
+        var createdResp = await Client.PostAsJsonAsync("/loans", create);
+        createdResp.StatusCode.Should().Be(HttpStatusCode.Created);
+        var created = await createdResp.Content.ReadFromJsonAsync<LoanResponse>();
+        created.Should().NotBeNull();
+
+        var payment = new PaymentRequest(-200);
+        var paymentResp = await Client.PostAsJsonAsync($"/loans/{created!.Id}/payment", payment);
+        paymentResp.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+        var errorResponse = await paymentResp.Content.ReadFromJsonAsync<ErrorResponse>();
+        errorResponse.Should().NotBeNull();
+        errorResponse.Details.Should().ContainSingle(d => d.Key == "Amount");
     }
 }

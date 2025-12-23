@@ -22,7 +22,7 @@ public static class CustomMiddlewareExtensions
 {
     public static void UseCustomMiddleware(this IApplicationBuilder app)
     {
-        app.UseMiddleware<CorrellationIdMiddleware>();
+        app.UseMiddleware<CorrellationMiddleware>();
         app.UseMiddleware<ErrorHandlingMiddleware>();
     }
 }

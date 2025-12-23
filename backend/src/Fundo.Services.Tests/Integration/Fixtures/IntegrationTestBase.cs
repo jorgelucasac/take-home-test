@@ -5,23 +5,23 @@ using Xunit;
 namespace Fundo.Services.Tests.Integration.Fixtures;
 
 [Collection(nameof(DatabaseCollection))]
-public abstract class BaseControllerTest(SqlServerContainerFixture db) : IAsyncLifetime
+public abstract class IntegrationTestBase(SqlServerContainerFixture db) : IAsyncLifetime
 {
     public HttpClient Client;
     private readonly SqlServerContainerFixture _db = db;
-    private CustomWebApplicationFactory _factory;
+    protected CustomWebApplicationFactory Factory;
 
     public Task InitializeAsync()
     {
-        _factory = new CustomWebApplicationFactory(_db.ConnectionString);
-        Client = _factory.CreateClient();
+        Factory = new CustomWebApplicationFactory(_db.ConnectionString);
+        Client = Factory.CreateClient();
         return Task.CompletedTask;
     }
 
     public Task DisposeAsync()
     {
         Client.Dispose();
-        _factory.Dispose();
+        Factory.Dispose();
         return Task.CompletedTask;
     }
 }

@@ -30,7 +30,7 @@ public class ApplyPaymentHandler : IRequestHandler<ApplyPaymentCommand, Result<L
         if (loan == null)
         {
             _logger.LogWarning("Loan with ID {LoanId} not found.", request.Id);
-            return Result.Failure<LoanResponse>("Loan not found.");
+            return Result.NotFound<LoanResponse>("Loan not found.");
         }
 
         var result = ApplyPayment(loan, request);
