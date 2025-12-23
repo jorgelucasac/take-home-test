@@ -35,7 +35,7 @@ public class Loan : BaseEntity
         Amount = amount;
         CurrentBalance = currentBalance;
         ApplicantName = applicantName;
-        Status = LoanStatus.Active;
+        Status = currentBalance == 0 ? LoanStatus.Paid : LoanStatus.Active;
     }
 
     public void ApplyPayment(decimal paymentAmount)

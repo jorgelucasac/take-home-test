@@ -29,7 +29,7 @@ public class CreateLoanHandler : IRequestHandler<CreateLoanCommand, Result<LoanR
             request.Amount,
             request.CurrentBalance,
             request.ApplicantName,
-           nameof(LoanStatus.Active)
+            loan.Status.ToString()
         );
 
         return Result.Success(response);
