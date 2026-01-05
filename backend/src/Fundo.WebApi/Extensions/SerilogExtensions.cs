@@ -1,5 +1,4 @@
-﻿using Fundo.WebApi.Middlewares;
-using Serilog;
+﻿using Serilog;
 
 namespace Fundo.WebApi.Extensions;
 
@@ -15,14 +14,5 @@ public static class SerilogExtensions
                 .Enrich.WithProperty("Application", "Fundo.WebApi")
                 .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName);
         });
-    }
-}
-
-public static class CustomMiddlewareExtensions
-{
-    public static void UseCustomMiddleware(this IApplicationBuilder app)
-    {
-        app.UseMiddleware<CorrellationMiddleware>();
-        app.UseMiddleware<ErrorHandlingMiddleware>();
     }
 }
