@@ -34,6 +34,9 @@ public class GetLoansHandlerTests
         var result = await _handler.Handle(query, CancellationToken.None);
         // Assert
         _loanRepositoryMock.Verify(repo => repo.GetAllAsync(CancellationToken.None), Times.Once);
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().NotBeNull();
+        result.Value!.Should().BeEmpty();
     }
 
     [Fact]

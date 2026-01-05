@@ -41,7 +41,9 @@ public class ApplyPaymentHandlerTests
         // Assert
         result.IsSuccess.Should().BeTrue();
         loan.CurrentBalance.Should().Be(300);
+        loan.Status.Should().Be(Domain.Enums.LoanStatus.Active);
         _unitOfWorkMock.Verify(uow => uow.CommitAsync(CancellationToken.None), Times.Once);
+        _loanRepositoryMock.Verify(repo => repo.GetByIdForUpdateAsync(command.Id, CancellationToken.None), Times.Once);
     }
 
     [Fact]
@@ -57,6 +59,7 @@ public class ApplyPaymentHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error!.Message.Should().Be("Loan not found.");
+        _loanRepositoryMock.Verify(repo => repo.GetByIdForUpdateAsync(command.Id, CancellationToken.None), Times.Once);
     }
 
     [Fact]
@@ -73,6 +76,7 @@ public class ApplyPaymentHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error!.Message.Should().Be("Payment cannot be greater than current balance.");
+        _loanRepositoryMock.Verify(repo => repo.GetByIdForUpdateAsync(command.Id, CancellationToken.None), Times.Once);
     }
 
     [Fact]
@@ -91,5 +95,6 @@ public class ApplyPaymentHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error!.Message.Should().Be("Loan is already paid.");
+        _loanRepositoryMock.Verify(repo => repo.GetByIdForUpdateAsync(command.Id, CancellationToken.None), Times.Once);
     }
 }
