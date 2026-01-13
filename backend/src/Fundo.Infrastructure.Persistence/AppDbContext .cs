@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<Loan> Loans { get; set; }
+    public DbSet<LoanHistory> LoanHistories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -9,6 +9,7 @@ public class Loan : BaseEntity
     public decimal CurrentBalance { get; private set; }
     public string ApplicantName { get; private set; }
     public LoanStatus Status { get; set; }
+    public ICollection<LoanHistory> Histories { get; private set; }
 
     public Loan(decimal amount, decimal currentBalance, string applicantName) : base()
     {
@@ -36,6 +37,7 @@ public class Loan : BaseEntity
         CurrentBalance = currentBalance;
         ApplicantName = applicantName;
         Status = currentBalance == 0 ? LoanStatus.Paid : LoanStatus.Active;
+        Histories = new List<LoanHistory>();
     }
 
     public void ApplyPayment(decimal paymentAmount)

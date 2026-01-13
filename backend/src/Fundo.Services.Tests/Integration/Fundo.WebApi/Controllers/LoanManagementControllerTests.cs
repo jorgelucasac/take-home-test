@@ -4,7 +4,9 @@ using Fundo.Application.Features.Shared;
 using Fundo.Services.Tests.Integration.Fixtures;
 using Fundo.WebApi.Transport.Rerquest;
 using Fundo.WebApi.Transport.Response;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -69,9 +71,17 @@ public class LoanManagementControllerTests(SqlServerContainerFixture db) : Integ
         var paymentResp = await Client.PostAsJsonAsync($"/loans/{created!.Id}/payment", payment);
         paymentResp.StatusCode.Should().Be(HttpStatusCode.OK);
 
+        var histories = await TestDbContext
+             .LoanHistories
+             .AsNoTracking()
+             .Where(x => x.LoanId == created.Id)
+             .ToListAsync();
+
         var updated = await paymentResp.Content.ReadFromJsonAsync<LoanResponse>();
         updated.Should().NotBeNull();
         updated!.CurrentBalance.Should().Be(created.CurrentBalance - payment.Amount);
+        histories.Should().NotBeNull();
+        histories.Should().HaveCount(1);
     }
 
     [Fact]

@@ -36,5 +36,6 @@ public static class PersistenceDependencyInjection
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ILoanRepository, LoanRepository>();
+        services.AddScoped<ILoanHistoryRepository, LoanHistoryRepository>();
     }
 }
