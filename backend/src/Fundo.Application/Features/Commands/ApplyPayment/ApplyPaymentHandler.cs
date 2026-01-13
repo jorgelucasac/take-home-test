@@ -11,17 +11,20 @@ namespace Fundo.Application.Features.Commands.ApplyPayment;
 public class ApplyPaymentHandler : IRequestHandler<ApplyPaymentCommand, Result<LoanResponse>>
 {
     private readonly ILoanRepository _loanRepository;
+    private readonly ILoanHistoryRepository _loanHistoryRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ApplyPaymentHandler> _logger;
 
     public ApplyPaymentHandler(
         ILoanRepository loanRepository,
         IUnitOfWork unitOfWork,
-        ILogger<ApplyPaymentHandler> logger)
+        ILogger<ApplyPaymentHandler> logger,
+        ILoanHistoryRepository loanHistoryRepository)
     {
         _loanRepository = loanRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _loanHistoryRepository = loanHistoryRepository;
     }
 
     public async Task<Result<LoanResponse>> Handle(ApplyPaymentCommand request, CancellationToken cancellationToken)
@@ -41,9 +44,16 @@ public class ApplyPaymentHandler : IRequestHandler<ApplyPaymentCommand, Result<L
             return Result.Failure<LoanResponse>(result.Error!);
         }
 
+        await AddHistoryAsync(loan, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
         var response = new LoanResponse(loan.Id, loan.Amount, loan.CurrentBalance, loan.ApplicantName, loan.Status.ToString());
         return Result.Success(response);
+    }
+
+    private async Task AddHistoryAsync(Loan loan, CancellationToken cancellationToken)
+    {
+        var history = new LoanHistory(loan.Id, loan.CurrentBalance, loan.Status);
+        await _loanHistoryRepository.AddAsync(history, cancellationToken);
     }
 
     public static Result ApplyPayment(Loan loan, ApplyPaymentCommand request)
