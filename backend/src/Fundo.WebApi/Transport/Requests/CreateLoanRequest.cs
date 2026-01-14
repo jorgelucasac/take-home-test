@@ -1,6 +1,6 @@
 ﻿using Fundo.Application.Features.Commands.CreateLoan;
 
-namespace Fundo.WebApi.Transport.Rerquest;
+namespace Fundo.WebApi.Transport.Requests;
 
 public record CreateLoanRequest(decimal Amount, decimal CurrentBalance, string ApplicantName)
 {

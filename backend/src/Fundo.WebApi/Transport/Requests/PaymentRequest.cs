@@ -1,6 +1,6 @@
 ﻿using Fundo.Application.Features.Commands.ApplyPayment;
 
-namespace Fundo.WebApi.Transport.Rerquest;
+namespace Fundo.WebApi.Transport.Requests;
 
 public record PaymentRequest(decimal Amount)
 {

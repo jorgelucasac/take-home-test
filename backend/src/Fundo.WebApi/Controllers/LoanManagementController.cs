@@ -4,7 +4,7 @@ using Fundo.Application.Features.Queries.GetLoans;
 using Fundo.Application.Features.Shared;
 using Fundo.Application.Pagination;
 using Fundo.Application.Results;
-using Fundo.WebApi.Transport.Rerquest;
+using Fundo.WebApi.Transport.Requests;
 using Fundo.WebApi.Transport.Response;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
