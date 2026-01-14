@@ -3,7 +3,7 @@ using Fundo.Domain.Exceptions;
 
 namespace Fundo.Domain.Entities;
 
-public class Loan : BaseEntity
+public class Loan : BaseEntity<Guid>
 {
     public decimal Amount { get; private set; }
     public decimal CurrentBalance { get; private set; }
@@ -33,6 +33,7 @@ public class Loan : BaseEntity
             throw new DomainArgumentException("Current balance cannot be greater than amount.", nameof(currentBalance));
         }
 
+        Id = Guid.NewGuid();
         Amount = amount;
         CurrentBalance = currentBalance;
         ApplicantName = applicantName;

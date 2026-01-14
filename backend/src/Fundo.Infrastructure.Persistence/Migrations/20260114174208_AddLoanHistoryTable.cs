@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Fundo.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddLoanHistory : Migration
+    public partial class AddLoanHistoryTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,9 @@ namespace Fundo.Infrastructure.Persistence.Migrations
                 name: "LoanHistories",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PaymentAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     LoanId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CurrentBalance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
