@@ -44,15 +44,15 @@ public class ApplyPaymentHandler : IRequestHandler<ApplyPaymentCommand, Result<L
             return Result.Failure<LoanResponse>(result.Error!);
         }
 
-        await AddHistoryAsync(loan, cancellationToken);
+        await AddHistoryAsync(loan, request.Amount, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
         var response = new LoanResponse(loan.Id, loan.Amount, loan.CurrentBalance, loan.ApplicantName, loan.Status.ToString());
         return Result.Success(response);
     }
 
-    private async Task AddHistoryAsync(Loan loan, CancellationToken cancellationToken)
+    private async Task AddHistoryAsync(Loan loan, decimal amount, CancellationToken cancellationToken)
     {
-        var history = new LoanHistory(loan.Id, loan.CurrentBalance, loan.Status);
+        var history = new LoanHistory(loan.Id, loan.CurrentBalance, amount, loan.Status);
         await _loanHistoryRepository.AddAsync(history, cancellationToken);
     }
 
