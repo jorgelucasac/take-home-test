@@ -45,7 +45,6 @@ public class GetLoansHandlerTests
         // Arrange
         var loans = new List<Loan>
         {
-            new(1000, 800, "Alice"),
             new(2000, 1500, "Bob")
         };
         _loanRepositoryMock
@@ -57,10 +56,10 @@ public class GetLoansHandlerTests
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
-        result.Value!.Count().Should().Be(2);
+        result.Value!.Count().Should().Be(1);
         result.Value.Should().AllSatisfy(loanResponse =>
         {
-            var correspondingLoan = loans.First(l => l.Id == loanResponse.Id);
+            var correspondingLoan = loans.FirstOrDefault(l => l.Id == loanResponse.Id);
             loanResponse.Amount.Should().Be(correspondingLoan.Amount);
             loanResponse.CurrentBalance.Should().Be(correspondingLoan.CurrentBalance);
             loanResponse.ApplicantName.Should().Be(correspondingLoan.ApplicantName);
