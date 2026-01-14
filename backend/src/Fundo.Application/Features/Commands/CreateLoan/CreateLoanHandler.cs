@@ -1,8 +1,8 @@
 ﻿using Fundo.Application.Features.Shared;
+using Fundo.Application.Repositories;
 using Fundo.Application.Results;
 using Fundo.Domain.Entities;
 using Fundo.Domain.Enums;
-using Fundo.Domain.Repositories;
 using MediatR;
 
 namespace Fundo.Application.Features.Commands.CreateLoan;
