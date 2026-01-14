@@ -4,4 +4,4 @@ using MediatR;
 
 namespace Fundo.Application.Features.Queries.GetLoanById;
 
-public record GetLoanByIdQuery(Guid Id) : IRequest<Result<LoanResponse>>;
+public record GetLoanByIdQuery(int Id) : IRequest<Result<LoanResponse>>;

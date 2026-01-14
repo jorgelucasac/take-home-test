@@ -18,7 +18,7 @@ public class GetLoanByIdQueryValidatorTests
     public void Validate_ShouldReturnError_WhenIdIsEmpty()
     {
         // Arrange
-        var query = new GetLoanByIdQuery(Guid.Empty);
+        var query = new GetLoanByIdQuery(0);
         // Act
         var result = _validator.Validate(query);
         // Assert
@@ -32,7 +32,8 @@ public class GetLoanByIdQueryValidatorTests
     public void Validate_ShouldPass_WhenIdIsValid()
     {
         // Arrange
-        var query = new GetLoanByIdQuery(Guid.NewGuid());
+        int loandId = Random.Shared.Next(1, 1000);
+        var query = new GetLoanByIdQuery(loandId);
         // Act
         var result = _validator.Validate(query);
         // Assert

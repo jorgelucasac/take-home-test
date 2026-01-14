@@ -24,7 +24,7 @@ public class LoanTests
         loan.CurrentBalance.Should().Be(currentBalance);
         loan.ApplicantName.Should().Be(applicantName);
         loan.Status.Should().Be(LoanStatus.Active);
-        loan.Id.Should().NotBeEmpty();
+        loan.Id.Should().Be(0);
         loan.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, precision: TimeSpan.FromMilliseconds(1000));
     }
 
@@ -42,7 +42,7 @@ public class LoanTests
         loan.CurrentBalance.Should().Be(currentBalance);
         loan.ApplicantName.Should().Be(applicantName);
         loan.Status.Should().Be(LoanStatus.Paid);
-        loan.Id.Should().NotBeEmpty();
+        loan.Id.Should().Be(0);
         loan.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, precision: TimeSpan.FromMilliseconds(1000));
     }
 
@@ -178,19 +178,5 @@ public class LoanTests
         // Assert
         act.Should().Throw<DomainArgumentException>()
             .WithMessage("Payment cannot be greater than current balance.*");
-    }
-
-    [Fact]
-    public void CreatingLoan_ShouldInitializeIdAndCreatedAt()
-    {
-        // Arrange
-        decimal amount = 1000m;
-        decimal currentBalance = 500m;
-        string applicantName = "John Doe";
-        // Act
-        var loan = new Loan(amount, currentBalance, applicantName);
-        // Assert
-        loan.Id.Should().NotBeEmpty();
-        loan.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, precision: TimeSpan.FromMilliseconds(1000));
     }
 }

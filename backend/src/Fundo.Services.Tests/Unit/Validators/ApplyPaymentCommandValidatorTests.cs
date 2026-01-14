@@ -18,19 +18,20 @@ public class ApplyPaymentCommandValidatorTests
     public void Validate_ShouldReturnError_WhenLoanIdIsEmpty()
     {
         // Arrange
-        var command = new ApplyPaymentCommand(Guid.Empty, 100m);
+        var command = new ApplyPaymentCommand(0, 100m);
         // Act
         var result = _validator.Validate(command);
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Should().Contain(e => e.PropertyName == "Id" && e.ErrorMessage == "Loan ID must be provided.");
+        result.Errors.Should().Contain(e => e.PropertyName == "Id" && e.ErrorMessage == "Loan ID must be greater than zero.");
     }
 
     [Fact]
     public void Validate_ShouldReturnError_WhenAmountIsNotGreaterThanZero()
     {
         // Arrange
-        var command = new ApplyPaymentCommand(Guid.NewGuid(), 0m);
+        int loandId = Random.Shared.Next(1, 1000);
+        var command = new ApplyPaymentCommand(loandId, 0m);
         // Act
         var result = _validator.Validate(command);
         // Assert
@@ -42,7 +43,8 @@ public class ApplyPaymentCommandValidatorTests
     public void Validate_ShouldBeValid_WhenCommandIsCorrect()
     {
         // Arrange
-        var command = new ApplyPaymentCommand(Guid.NewGuid(), 150m);
+        int loandId = Random.Shared.Next(1, 1000);
+        var command = new ApplyPaymentCommand(loandId, 150m);
         // Act
         var result = _validator.Validate(command);
         // Assert

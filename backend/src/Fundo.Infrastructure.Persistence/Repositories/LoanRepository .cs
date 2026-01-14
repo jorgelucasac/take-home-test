@@ -16,14 +16,17 @@ internal class LoanRepository : ILoanRepository
         await _db.Loans.AddAsync(loan, cancellationToken);
     }
 
-    public async Task<Loan?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Loan?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await _db.Loans.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        return await _db.Loans
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
-    public async Task<Loan?> GetByIdForUpdateAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Loan?> GetByIdForUpdateAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await _db.Loans.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        return await _db.Loans
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
     public async Task<IReadOnlyList<Loan>> GetAllAsync(CancellationToken cancellationToken = default)

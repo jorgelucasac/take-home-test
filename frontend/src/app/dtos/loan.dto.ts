@@ -1,5 +1,5 @@
 export interface LoanDto {
-  id: string;
+  id: number;
   amount: number;
   currentBalance: number;
   applicantName: string;

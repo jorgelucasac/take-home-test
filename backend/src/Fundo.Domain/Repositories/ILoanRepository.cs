@@ -8,7 +8,7 @@ public interface ILoanRepository
 
     Task<IReadOnlyList<Loan>> GetAllAsync(CancellationToken cancellationToken = default);
 
-    Task<Loan?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Loan?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 
-    Task<Loan?> GetByIdForUpdateAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Loan?> GetByIdForUpdateAsync(int id, CancellationToken cancellationToken = default);
 }

@@ -25,7 +25,7 @@ describe(AppComponent.name, () => {
     it('should load loans on init (success)', () => {
         const mockLoans: LoanDto[] = [
             {
-                id: 'loan-123',
+                id: 1,
                 amount: 25000,
                 currentBalance: 18750,
                 applicantName: 'John Doe',

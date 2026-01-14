@@ -66,7 +66,8 @@ public class ApplyPaymentHandlerTests
     public async Task Handle_LoanNotFound_ReturnsNotFoundError()
     {
         // Arrange
-        var command = new ApplyPaymentCommand(Guid.NewGuid(), 100);
+        int id = Random.Shared.Next(1, 1000);
+        var command = new ApplyPaymentCommand(id, 100);
         _loanRepositoryMock
             .Setup(repo => repo.GetByIdForUpdateAsync(command.Id, CancellationToken.None))
             .ReturnsAsync((Loan?)null);

@@ -3,9 +3,9 @@ using Fundo.Domain.Exceptions;
 
 namespace Fundo.Domain.Entities;
 
-public class LoanHistory : BaseEntity<int>
+public class LoanHistory : BaseEntity
 {
-    public LoanHistory(Guid loanId, decimal currentBalance, decimal paymentAmount, LoanStatus status)
+    public LoanHistory(int loanId, decimal currentBalance, decimal paymentAmount, LoanStatus status)
     {
         if (paymentAmount <= 0)
         {
@@ -19,7 +19,7 @@ public class LoanHistory : BaseEntity<int>
     }
 
     public decimal PaymentAmount { get; set; }
-    public Guid LoanId { get; set; }
+    public int LoanId { get; set; }
     public decimal CurrentBalance { get; private set; }
     public LoanStatus Status { get; set; }
     public Loan? Loan { get; set; }

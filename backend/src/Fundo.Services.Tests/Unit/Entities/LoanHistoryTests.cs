@@ -13,7 +13,7 @@ namespace Fundo.Services.Tests.Unit.Entities
         public void CreateLoanHistory_WithValidParameters_ShouldCreateInstance()
         {
             // Arrange
-            var loanId = Guid.NewGuid();
+            int loanId = Random.Shared.Next(1, 1000);
             decimal currentBalance = 5000m;
             decimal paymentAmount = 1000m;
             LoanStatus status = LoanStatus.Active;
@@ -36,7 +36,7 @@ namespace Fundo.Services.Tests.Unit.Entities
         {
             // Arrange & Act
             Action act = () => new LoanHistory(
-                Guid.NewGuid(),
+                Random.Shared.Next(1, 1000),
                 1000m,
                 amount,
                LoanStatus.Active);
