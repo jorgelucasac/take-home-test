@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Fundo.Application.Features.Queries.GetLoans;
+using Fundo.Application.Repositories;
 using Fundo.Domain.Entities;
-using Fundo.Domain.Repositories;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;

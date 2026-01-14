@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Fundo.Application.Features.Queries.GetLoanById;
+using Fundo.Application.Repositories;
 using Fundo.Application.Results;
 using Fundo.Domain.Entities;
-using Fundo.Domain.Repositories;
 using Moq;
 using System;
 using System.Threading;

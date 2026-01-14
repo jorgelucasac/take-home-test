@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Fundo.Application.Features.Commands.CreateLoan;
+using Fundo.Application.Repositories;
 using Fundo.Domain.Entities;
 using Fundo.Domain.Enums;
-using Fundo.Domain.Repositories;
 using Moq;
 using System.Threading;
 using System.Threading.Tasks;
