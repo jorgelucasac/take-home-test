@@ -35,9 +35,9 @@ public class LoanManagementController : ControllerBase
         return HandlerErrorResponse(result.Error!);
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id:int}")]
     [ProducesResponseType<LoanResponse>(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         var query = new GetLoanByIdQuery(id);
         var result = await _mediator.Send(query, cancellationToken);
@@ -61,9 +61,9 @@ public class LoanManagementController : ControllerBase
         return HandlerErrorResponse(result.Error!);
     }
 
-    [HttpPost("{id:guid}/payment")]
+    [HttpPost("{id:int}/payment")]
     [ProducesResponseType<LoanResponse>(StatusCodes.Status200OK)]
-    public async Task<IActionResult> PaymentAsync(Guid id, [FromBody] PaymentRequest request, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> PaymentAsync(int id, [FromBody] PaymentRequest request, CancellationToken cancellationToken = default)
     {
         var result = await _mediator.Send(request.ToCommand(id), cancellationToken);
         if (result.IsSuccess)
