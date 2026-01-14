@@ -1,4 +1,4 @@
-﻿namespace Fundo.Domain.Repositories;
+﻿namespace Fundo.Application.Repositories;
 
 public interface IUnitOfWork
 {
