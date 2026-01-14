@@ -4,6 +4,6 @@ namespace Fundo.WebApi.Transport.Rerquest;
 
 public record PaymentRequest(decimal Amount)
 {
-    public ApplyPaymentCommand ToCommand(Guid loanId)
+    public ApplyPaymentCommand ToCommand(int loanId)
         => new(loanId, Amount);
 }
