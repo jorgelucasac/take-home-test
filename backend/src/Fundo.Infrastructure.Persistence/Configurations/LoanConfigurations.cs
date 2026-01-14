@@ -9,6 +9,9 @@ internal class LoanConfiguration : IEntityTypeConfiguration<Loan>
     public void Configure(EntityTypeBuilder<Loan> builder)
     {
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id)
+               .ValueGeneratedOnAdd();
+
         builder.Property(e => e.CreatedAt)
                .IsRequired();
 
