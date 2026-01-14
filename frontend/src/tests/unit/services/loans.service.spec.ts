@@ -29,7 +29,7 @@ describe('LoansService', () => {
   it('should retrieve all loans from the API', () => {
     const mockLoans: LoanDto[] = [
       {
-        id: '1',
+        id: 1,
         amount: 5000,
         currentBalance: 2000,
         applicantName: 'Alice',
