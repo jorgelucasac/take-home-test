@@ -43,7 +43,11 @@ public class ApplyPaymentHandlerTests
             .ReturnsAsync(loan);
 
         _loanHistorRepositoryMock
-            .Setup(x => x.AddAsync(It.Is<LoanHistory>(e => e.LoanId == loan.Id && e.Status == loan.Status && e.CurrentBalance == loan.CurrentBalance)
+            .Setup(x => x.AddAsync(It.Is<LoanHistory>(e =>
+            e.LoanId == loan.Id
+            && e.Status == loan.Status
+            && e.CurrentBalance == loan.CurrentBalance
+            && e.PaymentAmount == command.Amount)
             , CancellationToken.None))
             .Returns(Task.CompletedTask);
 
