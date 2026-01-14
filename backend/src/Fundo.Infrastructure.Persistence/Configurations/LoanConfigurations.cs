@@ -4,11 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Fundo.Infrastructure.Persistence.Configurations;
 
-internal class LoanConfiguration : BaseEntityConfiguration<Loan>
+internal class LoanConfiguration : IEntityTypeConfiguration<Loan>
 {
-    public override void Configure(EntityTypeBuilder<Loan> builder)
+    public void Configure(EntityTypeBuilder<Loan> builder)
     {
-        base.Configure(builder);
+        builder.HasKey(e => e.Id);
+        builder.Property(e => e.CreatedAt)
+               .IsRequired();
 
         builder.Property(l => l.Amount)
                .IsRequired()
