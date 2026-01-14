@@ -1,6 +1,8 @@
-﻿using Fundo.Application.Features.Queries.GetLoanById;
+﻿using Fundo.Application.Features.Queries.GetHistoryByLoanId;
+using Fundo.Application.Features.Queries.GetLoanById;
 using Fundo.Application.Features.Queries.GetLoans;
 using Fundo.Application.Features.Shared;
+using Fundo.Application.Pagination;
 using Fundo.Application.Results;
 using Fundo.WebApi.Transport.Rerquest;
 using Fundo.WebApi.Transport.Response;
@@ -66,6 +68,19 @@ public class LoanManagementController : ControllerBase
     public async Task<IActionResult> PaymentAsync(int id, [FromBody] PaymentRequest request, CancellationToken cancellationToken = default)
     {
         var result = await _mediator.Send(request.ToCommand(id), cancellationToken);
+        if (result.IsSuccess)
+        {
+            return Ok(result.Value);
+        }
+
+        return HandlerErrorResponse(result.Error!);
+    }
+
+    [HttpGet("{id:int}/histories")]
+    [ProducesResponseType<PaginatedResponse<LoanHistoryResponse>>(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetHistoryAsync(int id, [FromQuery] PaginationRequest request, CancellationToken cancellationToken = default)
+    {
+        var result = await _mediator.Send(new GetHistoryByLoanIdQuery(id, request.PageNumber, request.PageSize), cancellationToken);
         if (result.IsSuccess)
         {
             return Ok(result.Value);
