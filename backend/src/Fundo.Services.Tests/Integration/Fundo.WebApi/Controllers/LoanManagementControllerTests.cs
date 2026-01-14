@@ -3,7 +3,7 @@ using Fundo.Application.Features.Commands.CreateLoan;
 using Fundo.Application.Features.Shared;
 using Fundo.Services.Tests.Integration.Fixtures;
 using Fundo.Services.Tests.Integration.Responses;
-using Fundo.WebApi.Transport.Rerquest;
+using Fundo.WebApi.Transport.Requests;
 using Fundo.WebApi.Transport.Response;
 using System.Collections.Generic;
 using System.Net;
@@ -101,6 +101,21 @@ public class LoanManagementControllerTests(SqlServerContainerFixture db) : Integ
         historiesResult.Items.Should().ContainSingle(h =>
             h.LoanId == created.Id &&
             h.PaymentAmount == payment.Amount);
+    }
+
+    [Fact]
+    public async Task GetHistories_WhenNoHistories_ShouldReturnEmpty()
+    {
+        // Arrange & Act
+        var historiesResp = await Client.GetAsync($"/loans/{int.MaxValue}/histories");
+        historiesResp.StatusCode.Should().Be(HttpStatusCode.OK);
+        var historiesResult = await historiesResp.Content.ReadFromJsonAsync<TestPaginatedResponse<LoanHistoryResponse>>();
+
+        // Assert
+        historiesResult.Should().NotBeNull();
+        historiesResult.TotalItems.Should().Be(0);
+        historiesResult.IsEmpty.Should().BeTrue();
+        historiesResult.Items.Should().BeEmpty();
     }
 
     [Fact]
