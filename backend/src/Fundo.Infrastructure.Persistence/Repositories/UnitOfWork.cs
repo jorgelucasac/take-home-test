@@ -1,4 +1,4 @@
-﻿using Fundo.Domain.Repositories;
+﻿using Fundo.Application.Repositories;
 
 namespace Fundo.Infrastructure.Persistence.Repositories;
 

@@ -1,8 +1,9 @@
-﻿using Fundo.Domain.Repositories;
+﻿using Fundo.Application.Repositories;
 using Fundo.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Fundo.Infrastructure.Persistence.DependencyInjections;
 
@@ -29,6 +30,10 @@ public static class PersistenceDependencyInjection
 
                 options.EnableDetailedErrors(isDevelopment);
                 options.EnableSensitiveDataLogging(isDevelopment);
+                if (isDevelopment)
+                {
+                    options.LogTo(Console.WriteLine, LogLevel.Information);
+                }
             }));
     }
 
