@@ -48,7 +48,7 @@ public class GetLoanByIdHandlerTests
     public async Task Handle_LoanDoesNotExist_ReturnsNotFoundError()
     {
         // Arrange
-        var loanId = Guid.NewGuid();
+        var loanId = Random.Shared.Next(1, 1000);
         _loanRepositoryMock.Setup(repo => repo.GetByIdAsync(loanId, CancellationToken.None))
             .ReturnsAsync((Loan?)null);
         var query = new GetLoanByIdQuery(loanId);
