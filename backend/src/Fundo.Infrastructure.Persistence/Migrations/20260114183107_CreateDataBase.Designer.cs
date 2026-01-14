@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fundo.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260114174208_AddLoanHistoryTable")]
-    partial class AddLoanHistoryTable
+    [Migration("20260114183107_CreateDataBase")]
+    partial class CreateDataBase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,9 +27,11 @@ namespace Fundo.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Fundo.Domain.Entities.Loan", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
@@ -71,8 +73,8 @@ namespace Fundo.Infrastructure.Persistence.Migrations
                     b.Property<decimal>("CurrentBalance")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("LoanId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("LoanId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("PaymentAmount")
                         .HasColumnType("decimal(18,2)");
