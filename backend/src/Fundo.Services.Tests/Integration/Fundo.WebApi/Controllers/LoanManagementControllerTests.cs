@@ -2,11 +2,10 @@ using FluentAssertions;
 using Fundo.Application.Features.Commands.CreateLoan;
 using Fundo.Application.Features.Shared;
 using Fundo.Services.Tests.Integration.Fixtures;
-using Fundo.WebApi.Transport.Rerquest;
+using Fundo.Services.Tests.Integration.Responses;
+using Fundo.WebApi.Transport.Requests;
 using Fundo.WebApi.Transport.Response;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -71,17 +70,52 @@ public class LoanManagementControllerTests(SqlServerContainerFixture db) : Integ
         var paymentResp = await Client.PostAsJsonAsync($"/loans/{created!.Id}/payment", payment);
         paymentResp.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        var histories = await TestDbContext
-             .LoanHistories
-             .AsNoTracking()
-             .Where(x => x.LoanId == created.Id)
-             .ToListAsync();
+        var updated = await paymentResp.Content.ReadFromJsonAsync<LoanResponse>();
+        updated.Should().NotBeNull();
+        updated!.CurrentBalance.Should().Be(created.CurrentBalance - payment.Amount);
+    }
+
+    [Fact]
+    public async Task CreateLoan_Then_PostPayment_ShouldCreateHistory()
+    {
+        var create = new CreateLoanCommand(1500m, 500m, "Maria Silva");
+
+        var createdResp = await Client.PostAsJsonAsync("/loans", create);
+        createdResp.StatusCode.Should().Be(HttpStatusCode.Created);
+        var created = await createdResp.Content.ReadFromJsonAsync<LoanResponse>();
+        created.Should().NotBeNull();
+
+        var payment = new PaymentRequest(500m);
+        var paymentResp = await Client.PostAsJsonAsync($"/loans/{created!.Id}/payment", payment);
+        paymentResp.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var historiesResp = await Client.GetAsync($"/loans/{created.Id}/histories");
+        historiesResp.StatusCode.Should().Be(HttpStatusCode.OK);
+        var historiesResult = await historiesResp.Content.ReadFromJsonAsync<TestPaginatedResponse<LoanHistoryResponse>>();
 
         var updated = await paymentResp.Content.ReadFromJsonAsync<LoanResponse>();
         updated.Should().NotBeNull();
         updated!.CurrentBalance.Should().Be(created.CurrentBalance - payment.Amount);
-        histories.Should().NotBeNull();
-        histories.Should().HaveCount(1);
+        historiesResult.Should().NotBeNull();
+        historiesResult.TotalItems.Should().Be(1);
+        historiesResult.Items.Should().ContainSingle(h =>
+            h.LoanId == created.Id &&
+            h.PaymentAmount == payment.Amount);
+    }
+
+    [Fact]
+    public async Task GetHistories_WhenNoHistories_ShouldReturnEmpty()
+    {
+        // Arrange & Act
+        var historiesResp = await Client.GetAsync($"/loans/{int.MaxValue}/histories");
+        historiesResp.StatusCode.Should().Be(HttpStatusCode.OK);
+        var historiesResult = await historiesResp.Content.ReadFromJsonAsync<TestPaginatedResponse<LoanHistoryResponse>>();
+
+        // Assert
+        historiesResult.Should().NotBeNull();
+        historiesResult.TotalItems.Should().Be(0);
+        historiesResult.IsEmpty.Should().BeTrue();
+        historiesResult.Items.Should().BeEmpty();
     }
 
     [Fact]

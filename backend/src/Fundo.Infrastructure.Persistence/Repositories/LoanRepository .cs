@@ -1,5 +1,5 @@
-﻿using Fundo.Domain.Entities;
-using Fundo.Domain.Repositories;
+﻿using Fundo.Application.Repositories;
+using Fundo.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fundo.Infrastructure.Persistence.Repositories;

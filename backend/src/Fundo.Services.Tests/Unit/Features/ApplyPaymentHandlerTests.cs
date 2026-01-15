@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Fundo.Application.Features.Commands.ApplyPayment;
+using Fundo.Application.Repositories;
 using Fundo.Domain.Entities;
-using Fundo.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;

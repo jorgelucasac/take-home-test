@@ -32,6 +32,8 @@ internal class LoanHistoryConfiguration : IEntityTypeConfiguration<LoanHistory>
         builder.Property(x => x.LoanId)
             .IsRequired();
 
+        builder.HasIndex(x => new { x.LoanId, x.Id });
+
         builder.HasOne(x => x.Loan)
             .WithMany(x => x.Histories)
             .HasForeignKey(x => x.LoanId);
